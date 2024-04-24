@@ -12,6 +12,12 @@ import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 public class ProdukRepository {
     ArrayList<Produk> listProduk = new ArrayList<>();
     public Produk create(Produk createdProduk) {
+        String namaProdukYgDiinput = createdProduk.getNama();
+        for (Produk produk : listProduk) {
+            if (produk.getNama().equals(namaProdukYgDiinput)) {
+                throw new IllegalArgumentException("Produk dengan nama tersebut sudah ada");
+            }
+        }
         listProduk.add(createdProduk);
         return createdProduk;
     }
@@ -45,7 +51,9 @@ public class ProdukRepository {
             targetProduct.setStokTersedia(editedProduct.getStokTersedia());
             targetProduct.setDeskripsi(editedProduct.getDeskripsi());
             targetProduct.setHarga(editedProduct.getHarga());
+            return targetProduct;
+        } else {
+            throw new IllegalArgumentException("Id produk tidak ditemukan");
         }
-        return targetProduct;
     }
 }
