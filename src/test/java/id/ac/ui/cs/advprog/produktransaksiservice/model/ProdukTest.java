@@ -3,8 +3,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
-public class ProductTest {
+public class ProdukTest {
     Produk produk1;
+    Produk produk2;
     @BeforeEach
     void setup() {
         this.produk1 = new Produk();
@@ -16,6 +17,9 @@ public class ProductTest {
         this.produk1.setStokTersedia(100);
         this.produk1.setStokTerjual(10);
         this.produk1.setPenjual("Rockstar Store");
+
+        this.produk2 = new Produk();
+
     }
 
     @Test
@@ -56,5 +60,10 @@ public class ProductTest {
     @Test
     void testGetPenjual() {
         assertEquals("Rockstar Store", this.produk1.getPenjual());
+    }
+
+    @Test
+    void testProdukWithInvalidStok() {
+        assertThrows(IllegalArgumentException.class, () -> this.produk2.setStokTersedia(-100));
     }
 }
