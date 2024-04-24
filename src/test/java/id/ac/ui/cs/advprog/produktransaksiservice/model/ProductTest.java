@@ -12,6 +12,10 @@ public class ProductTest {
         this.produk1.setNama("Red Dead Redemption 2");
         this.produk1.setKategori("Open World");
         this.produk1.setHarga(350000);
+        this.produk1.setDeskripsi("Prequel to RDR 1");
+        this.produk1.setStokTersedia(100);
+        this.produk1.setStokTerjual(10);
+        this.produk1.setPenjual("Rockstar Store");
     }
 
     @Test
@@ -32,5 +36,25 @@ public class ProductTest {
     @Test
     void testGetHarga() {
         assertEquals(350000, this.produk1.getHarga());
+    }
+
+    @Test
+    void testGetDeskripsi() {
+        assertEquals("Prequel to RDR 1", this.produk1.getDeskripsi());
+    }
+
+    @Test
+    void testGetStokTersedia() {
+        assertEquals(100, this.produk1.getStokTersedia());
+    }
+
+    @Test
+    void testGetStokTerjual() {
+        assertEquals(10, this.produk1.getStokTerjual());
+    }
+
+    @Test
+    void testGetPenjual() {
+        assertEquals("Rockstar Store", this.produk1.getPenjual());
     }
 }
