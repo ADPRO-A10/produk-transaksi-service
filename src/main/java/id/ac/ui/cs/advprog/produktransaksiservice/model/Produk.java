@@ -2,7 +2,6 @@ package id.ac.ui.cs.advprog.produktransaksiservice.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +29,13 @@ public class Produk {
 
     @Setter
     private String penjual;
+
+    @Setter
+    private List<Review> reviews;
+
+    public Produk() {
+
+    }
 
     public void setStokTersedia(int stok) {
         if (stok < 0) {
