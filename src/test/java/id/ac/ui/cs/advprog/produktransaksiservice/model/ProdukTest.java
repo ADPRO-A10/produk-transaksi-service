@@ -66,4 +66,52 @@ public class ProdukTest {
     void testProdukWithInvalidStok() {
         assertThrows(IllegalArgumentException.class, () -> this.produk2.setStokTersedia(-100));
     }
+
+    @Test
+    void testSetProdukId() {
+        this.produk1.setProdukId("f8c3de3d-1fea-4d7c-a8b0-29f63a5w9281");
+        assertEquals("f8c3de3d-1fea-4d7c-a8b0-29f63a5w9281", this.produk1.getProdukId());
+    }
+
+    @Test
+    void testSetNama() {
+        this.produk1.setNama("Red Dead Redemption 2 Update");
+        assertEquals("Red Dead Redemption 2 Update", this.produk1.getNama());
+    }
+
+    @Test
+    void testSetKategori() {
+        this.produk1.setKategori("Shooting");
+        assertEquals("Shooting", this.produk1.getKategori());
+    }
+
+    @Test
+    void testSetDeskripsi() {
+        this.produk1.setDeskripsi("This is an updated version of RDR 2");
+        assertEquals("This is an updated version of RDR 2", this.produk1.getDeskripsi());
+    }
+
+    @Test
+    void testSetHarga() {
+        this.produk1.setHarga(300000);
+        assertEquals(300000, this.produk1.getHarga());
+    }
+
+    @Test
+    void testStokTersedia() {
+        this.produk1.setStokTersedia(200);
+        assertEquals(200, this.produk1.getStokTersedia());
+    }
+
+    @Test
+    void testStokTerjual() {
+        this.produk1.setStokTerjual(85);
+        assertEquals(85, this.produk1.getStokTerjual());
+    }
+
+    @Test
+    void testPenjual() {
+        this.produk1.setPenjual("Rockstar RDR Store");
+        assertEquals("Rockstar RDR Store", this.produk1.getPenjual());
+    }
 }
