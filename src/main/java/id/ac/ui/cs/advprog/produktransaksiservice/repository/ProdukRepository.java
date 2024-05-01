@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 
+@Repository
 public class ProdukRepository {
     ArrayList<Produk> listProduk = new ArrayList<>();
     public Produk create(Produk createdProduk) {
