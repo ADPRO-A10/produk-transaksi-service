@@ -3,7 +3,6 @@ package id.ac.ui.cs.advprog.produktransaksiservice.repository;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Transaksi;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 
