@@ -23,4 +23,12 @@ public class TransaksiRepository {
         }
         return null;
     }
+
+    public long countTotal(List<Produk> produkList) {
+        long totalHarga = 0;
+        for (Produk produk : produkList) {
+            totalHarga += Long.valueOf(produk.getHarga());
+        }
+        return Long.valueOf(totalHarga);
+    }
 }

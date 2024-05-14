@@ -23,4 +23,9 @@ public class Transaksi {
         this.tanggalTransaksi = tanggalTransaksi;
     }
 
+    public Transaksi(List<Produk> listProduk, Long totalHarga) {
+        this.listProduk = listProduk;
+        this.totalHarga = totalHarga;
+    }
+
 }
