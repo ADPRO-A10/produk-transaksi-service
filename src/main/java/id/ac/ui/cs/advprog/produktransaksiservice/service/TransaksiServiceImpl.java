@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransaksiServiceImpl implements TransaksiService {
@@ -19,25 +20,26 @@ public class TransaksiServiceImpl implements TransaksiService {
 
     @Override
     public Transaksi createTransaksi(Transaksi transaksi) {
-        return transaksiRepository.createTransaksi(transaksi);
+
+        return transaksiRepository.save(transaksi);
     }
     @Override
-    public Transaksi checkout(Long transaksiId) {
-        return transaksiRepository.findTransaksiById(transaksiId);
+    public Optional<Transaksi> checkout(Long transaksiId) {
+        return transaksiRepository.findById(String.valueOf(transaksiId));
     }
 
     @Override
     public void processTransaksi(Pembeli pembeli, List<Produk> listProduk) {
-        long totalHarga = transaksiRepository.countTotal(listProduk);
+        Transaksi transaksi = new Transaksi(listProduk);
+        long totalHarga = transaksi.countHarga();
         TransactionInvoker invoker = new TransactionInvoker();
+        invoker.addCommand(new AddLibraryCommand(pembeli, listProduk));
         invoker.addCommand(new DeductMoneyCommand(pembeli, totalHarga));
         for (Produk produk : listProduk) {
             invoker.addCommand(new UpdateStockCommand(produk, 1)); // Assuming quantity is 1 for simplicity
         }
         invoker.addCommand(new AddLibraryCommand(pembeli, listProduk));
         invoker.addCommand(new DeductMoneyCommand(pembeli, totalHarga));
-        Transaksi transaksi = new Transaksi(listProduk, totalHarga);
-
 
         invoker.executeCommands();
     }

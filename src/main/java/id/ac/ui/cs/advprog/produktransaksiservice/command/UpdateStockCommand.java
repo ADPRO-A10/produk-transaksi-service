@@ -13,11 +13,11 @@ public class UpdateStockCommand implements TransactionCommand {
 
     @Override
     public void execute() {
-        produk.reduceStock(quantity);
+        //produk.reduceStock(quantity);
     }
 
     @Override
     public void undo() {
-        produk.increaseStock(quantity);
+        //produk.increaseStock(quantity);
     }
 }

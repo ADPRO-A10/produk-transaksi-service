@@ -12,11 +12,11 @@ public class DeductMoneyCommand implements TransactionCommand {
 
     @Override
     public void execute() {
-        pembeli.deduct(totalHarga);
+        //pembeli.deduct(totalHarga);
     }
 
     @Override
     public void undo() {
-        pembeli.add(totalHarga);
+        //pembeli.add(totalHarga);
     }
 }

@@ -1,12 +1,20 @@
 package id.ac.ui.cs.advprog.produktransaksiservice.model;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
-@Getter @Setter
+@Getter
+@Setter
+@Entity
 public class Transaksi {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transaksiId;
     private List<Produk> listProduk;
     private Long totalHarga;
@@ -23,9 +31,16 @@ public class Transaksi {
         this.tanggalTransaksi = tanggalTransaksi;
     }
 
-    public Transaksi(List<Produk> listProduk, Long totalHarga) {
+    public Transaksi(List<Produk> listProduk) {
         this.listProduk = listProduk;
-        this.totalHarga = totalHarga;
     }
 
+    public Long countHarga() {
+        long totalHarganya = 0;
+        for (Produk produk : listProduk) {
+            totalHarganya += Long.valueOf(produk.getHarga());
+        }
+        this.totalHarga = totalHarganya;
+        return Long.valueOf(totalHarganya);
+    }
 }

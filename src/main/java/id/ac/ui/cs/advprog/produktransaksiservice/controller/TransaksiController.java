@@ -1,28 +1,52 @@
 package id.ac.ui.cs.advprog.produktransaksiservice.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Transaksi;
-import id.ac.ui.cs.advprog.produktransaksiservice.service.TransaksiServiceImpl;
-import org.springframework.ui.Model;
+import id.ac.ui.cs.advprog.produktransaksiservice.repository.TransaksiRepository;
+import id.ac.ui.cs.advprog.produktransaksiservice.service.TransaksiService;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import java.util.*;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/transaksi")
 public class TransaksiController {
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    private TransaksiServiceImpl transaksiService;
+    TransaksiService transaksiService;
+
+    @GetMapping
+    public String renderTransaksiPage() {
+        return "Hello World Transaksi!!";
+    }
 
     @PostMapping
-    public Transaksi createTransaksi(@RequestBody Transaksi transaksi) {
-        return transaksiService.createTransaksi(transaksi);
+    public ResponseEntity<String> createTransaksi() throws JsonProcessingException {
+        Transaksi transaksi = new Transaksi();
+        List<Produk> listProduk = new ArrayList<>();
+        transaksi.setListProduk(listProduk);
+
+        Transaksi result = transaksiService.createTransaksi(transaksi);
+        JSONObject response = new JSONObject();
+
+        if (result == null) {
+            response.put("message", "Transaksi gagal dibuat");
+            return ResponseEntity.badRequest().body(response.toString());
+        }
+
+        String data = objectMapper.writeValueAsString(transaksi);
+        response.put("message", "Transaksi berhasil dibuat");
+        response.put("data", data);
+        return ResponseEntity.ok(response.toString());
     }
 
-    @GetMapping("/{transaksiId}")
-    public Transaksi getTransaksi(@PathVariable Long transaksiId) {
-        return transaksiService.checkout(transaksiId);
-    }
 }

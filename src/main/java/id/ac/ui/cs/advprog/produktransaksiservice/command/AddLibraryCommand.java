@@ -16,11 +16,11 @@ public class AddLibraryCommand implements TransactionCommand {
 
     @Override
     public void execute() {
-        pembeli.addLibrary(listProduk);
+//        pembeli.addLibrary(listProduk);
     }
 
     @Override
     public void undo() {
-        pembeli.deleteLibrary(listProduk);
+        //pembeli.deleteLibrary(listProduk);
     }
 }
