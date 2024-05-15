@@ -10,7 +10,6 @@ ENV JDBC_DATABASE_URL ${JDBC_DATABASE_URL_STAGING}
 ENV JDBC_DATABASE_USERNAME ${JDBC_DATABASE_USERNAME_STAGING}
 
 WORKDIR /app
-COPY ./produk*-0.0.1-SNAPSHOT.jar /app
-RUN ls -la
+COPY ./build/libs/produk-transaksi-service-0.0.1-SNAPSHOT.jar /app
 EXPOSE 8080
 CMD ["java","-jar","produk-transaksi-service-0.0.1-SNAPSHOT.jar"]
