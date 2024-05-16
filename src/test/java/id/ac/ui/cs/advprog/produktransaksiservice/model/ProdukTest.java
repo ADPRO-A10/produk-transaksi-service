@@ -2,21 +2,24 @@ package id.ac.ui.cs.advprog.produktransaksiservice.model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
+
 public class ProdukTest {
+    ProdukDirector produkDirector;
     Produk produk1;
     Produk produk2;
     @BeforeEach
     void setup() {
-        this.produk1 = new Produk();
-        this.produk1.setProdukId("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
-        this.produk1.setNama("Red Dead Redemption 2");
-        this.produk1.setKategori("Open World");
-        this.produk1.setHarga(350000);
-        this.produk1.setDeskripsi("Prequel to RDR 1");
-        this.produk1.setStokTersedia(100);
-        this.produk1.setStokTerjual(10);
-        this.produk1.setPenjual("Rockstar Store");
+        ProdukDirector.ProdukBuilder produkBuilder = new ProdukDirector.ProdukBuilder();
+        this.produk1 = produkBuilder
+                .id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+                .nama("Red Dead Redemption 2")
+                .harga(350000)
+                .kategori("Open World")
+                .deskripsi("Prequel to RDR 1")
+                .stokTersedia(100)
+                .stokTerjual(10)
+                .penjual("Rockstar Store")
+                .build();
 
         this.produk2 = new Produk();
 
