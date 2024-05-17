@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ProdukTest {
-    ProdukDirector produkDirector;
     Produk produk1;
     Produk produk2;
     @BeforeEach
