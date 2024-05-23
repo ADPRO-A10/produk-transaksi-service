@@ -5,6 +5,8 @@ import id.ac.ui.cs.advprog.produktransaksiservice.repository.ProdukRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProdukServiceImpl implements ProdukService {
 
@@ -12,12 +14,12 @@ public class ProdukServiceImpl implements ProdukService {
     private ProdukRepository produkRepository;
 
     @Override
-    public Produk getProdukById(String id) {
+    public Produk findProdukById(String id) {
         return produkRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Produk addProduk(Produk produk) {
+    public Produk createProduk(Produk produk) {
         if(produkRepository.findByNama(produk.getNama()).isPresent()){
             throw new RuntimeException("Produk dengan nama tersebut sudah ada");
         } else {
@@ -39,5 +41,20 @@ public class ProdukServiceImpl implements ProdukService {
         produk.setStokTerjual(updatedProduk.getStokTerjual());
         produk.setPenjual(updatedProduk.getPenjual());
         return produkRepository.save(produk);
+    }
+
+    @Override
+    public List<Produk> findAll() {
+        return produkRepository.findAll();
+    }
+
+    @Override
+    public Produk deleteProduk(String id) {
+        Produk produk = produkRepository.findById(id).orElse(null);
+        if (produk == null) {
+            return null;
+        }
+        produkRepository.delete(produk);
+        return produk;
     }
 }
