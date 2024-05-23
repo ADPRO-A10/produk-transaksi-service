@@ -11,9 +11,10 @@ import java.util.UUID;
 @Entity
 @Table(name = "Produk")
 public class Produk {
+
     @Setter
     @Id
-    @Column(name = "Id")
+    @Column(name = "ProdukId")
     private String produkId = UUID.randomUUID().toString();
 
     @Setter
@@ -43,9 +44,9 @@ public class Produk {
     @Column(name = "Penjual")
     private String penjual;
 
-    @Setter
-    @Transient
-    private List<Review> reviews;
+//    @Setter
+//    @OneToMany(mappedBy = "produk", cascade = CascadeType.ALL)
+//    private ArrayList<Review> reviews;
 
     public Produk() {
     }

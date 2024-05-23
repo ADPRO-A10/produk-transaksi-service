@@ -13,7 +13,6 @@ public class ProdukDirector{
         private int stokTersedia;
         private int stokTerjual;
         private String penjual;
-        private List<Review> reviews;
 
         public ProdukBuilder() {
 
