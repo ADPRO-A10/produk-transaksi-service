@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,10 +47,10 @@ class ProdukServiceImplTest {
                 .stokTerjual(10)
                 .penjual("Rockstar Store")
                 .build();
-        produkServiceImpl.addProduk(tesProduk1);
+        produkServiceImpl.createProduk(tesProduk1);
 
         when(produkRepository.findById("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")).thenReturn(Optional.of(tesProduk1));
-        Produk findProduk = produkServiceImpl.getProdukById("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
+        Produk findProduk = produkServiceImpl.findProdukById("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
 
 
         assertNotNull(findProduk);
@@ -66,7 +67,7 @@ class ProdukServiceImplTest {
     @Test
     void testGetProdukByIdNotFound() {
         when(produkRepository.findById("123")).thenReturn(Optional.empty());
-        Produk result = produkServiceImpl.getProdukById("123");
+        Produk result = produkServiceImpl.findProdukById("123");
         assertNull(result);
     }
 
@@ -82,9 +83,9 @@ class ProdukServiceImplTest {
                 .stokTerjual(0)
                 .penjual("Seller A")
                 .build();
-        produkServiceImpl.addProduk(produk);
+        produkServiceImpl.createProduk(produk);
         when(produkRepository.findById("123")).thenReturn(Optional.of(produk));
-        assertNotNull(produkServiceImpl.getProdukById("123"));
+        assertNotNull(produkServiceImpl.findProdukById("123"));
 
         Produk updatedProduk = produkBuilder
                         .nama("Product B")
@@ -123,7 +124,8 @@ class ProdukServiceImplTest {
 
     @Test
     void testAddProdukWithSameName() {
-        Produk tesProduk1 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+        Produk tesProduk1 = produkBuilder.
+                id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
                 .nama("Red Dead Redemption 2")
                 .kategori("Open World")
                 .harga(350000)
@@ -132,9 +134,10 @@ class ProdukServiceImplTest {
                 .stokTerjual(10)
                 .penjual("Rockstar Store")
                 .build();
-        produkServiceImpl.addProduk(tesProduk1);
+        produkServiceImpl.createProduk(tesProduk1);
 
-        Produk tesProduk2 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3455")
+        Produk tesProduk2 = produkBuilder.
+                id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3455")
                 .nama("Red Dead Redemption 2")
                 .kategori("Open World")
                 .harga(350000)
@@ -147,6 +150,52 @@ class ProdukServiceImplTest {
         when(produkRepository.findByNama("Red Dead Redemption 2")).thenReturn(Optional.of(tesProduk1));
         when(produkRepository.findByNama("Red Dead Redemption 2")).thenReturn(Optional.of(tesProduk1));
 
-        assertThrows(RuntimeException.class, () -> produkServiceImpl.addProduk(tesProduk2));
+        assertThrows(RuntimeException.class, () -> produkServiceImpl.createProduk(tesProduk2));
+    }
+
+    @Test
+    void testFindAll() {
+        Produk tesProduk1 = produkBuilder.
+                id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+                .nama("Red Dead Redemption 2")
+                .kategori("Open World")
+                .harga(350000)
+                .deskripsi("Prequel to RDR 1")
+                .stokTersedia(100)
+                .stokTerjual(10)
+                .penjual("Rockstar Store")
+                .build();
+        produkServiceImpl.createProduk(tesProduk1);
+
+        Produk tesProduk2 = produkBuilder.
+                id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3455")
+                .nama("Red Dead Redemption 2")
+                .kategori("Open World")
+                .harga(350000)
+                .deskripsi("Prequel to RDR 1")
+                .stokTersedia(100)
+                .stokTerjual(10)
+                .penjual("Rockstar Store")
+                .build();
+        produkServiceImpl.createProduk(tesProduk2);
+
+        when(produkRepository.findAll()).thenReturn(List.of(tesProduk1, tesProduk2));
+        assertEquals(2, produkServiceImpl.findAll().size());
+        assertEquals(tesProduk1.getProdukId(), produkServiceImpl.findAll().getFirst().getProdukId());
+        assertEquals(tesProduk2.getProdukId(), produkServiceImpl.findAll().getLast().getProdukId());
+        assertEquals(tesProduk1.getNama(), produkServiceImpl.findAll().getFirst().getNama());
+        assertEquals(tesProduk2.getNama(), produkServiceImpl.findAll().getLast().getNama());
+        assertEquals(tesProduk1.getKategori(), produkServiceImpl.findAll().getFirst().getKategori());
+        assertEquals(tesProduk2.getKategori(), produkServiceImpl.findAll().getLast().getKategori());
+        assertEquals(tesProduk1.getHarga(), produkServiceImpl.findAll().getFirst().getHarga());
+        assertEquals(tesProduk2.getHarga(), produkServiceImpl.findAll().getLast().getHarga());
+        assertEquals(tesProduk1.getDeskripsi(), produkServiceImpl.findAll().getFirst().getDeskripsi());
+        assertEquals(tesProduk2.getDeskripsi(), produkServiceImpl.findAll().getLast().getDeskripsi());
+        assertEquals(tesProduk1.getStokTersedia(), produkServiceImpl.findAll().getFirst().getStokTersedia());
+        assertEquals(tesProduk2.getStokTersedia(), produkServiceImpl.findAll().getLast().getStokTersedia());
+        assertEquals(tesProduk1.getStokTerjual(), produkServiceImpl.findAll().getFirst().getStokTerjual());
+        assertEquals(tesProduk2.getStokTerjual(), produkServiceImpl.findAll().getLast().getStokTerjual());
+        assertEquals(tesProduk1.getPenjual(), produkServiceImpl.findAll().getFirst().getPenjual());
+        assertEquals(tesProduk2.getPenjual(), produkServiceImpl.findAll().getLast().getPenjual());
     }
 }
