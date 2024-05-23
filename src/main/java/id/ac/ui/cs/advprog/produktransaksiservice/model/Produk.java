@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-@Entity
-@Table(name = "Produk")
+@Entity(name = "Produk")
+@Table(name = "produk")
 public class Produk {
 
     @Setter
@@ -44,9 +44,13 @@ public class Produk {
     @Column(name = "Penjual")
     private String penjual;
 
-//    @Setter
-//    @OneToMany(mappedBy = "produk", cascade = CascadeType.ALL)
-//    private ArrayList<Review> reviews;
+    @Setter
+    @OneToMany(
+            mappedBy = "produk",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Review> reviews;
 
     public Produk() {
     }
