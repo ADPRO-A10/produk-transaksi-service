@@ -18,7 +18,11 @@ public class ProdukServiceImpl implements ProdukService {
 
     @Override
     public Produk addProduk(Produk produk) {
-        return produkRepository.save(produk);
+        if(produkRepository.findByNama(produk.getNama()).isPresent()){
+            throw new RuntimeException("Produk dengan nama tersebut sudah ada");
+        } else {
+            return produkRepository.save(produk);
+        }
     }
 
     @Override

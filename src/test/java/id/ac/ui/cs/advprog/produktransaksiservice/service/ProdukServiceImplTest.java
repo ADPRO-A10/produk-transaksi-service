@@ -114,4 +114,32 @@ class ProdukServiceImplTest {
 
         assertNull(result);
     }
+
+    @Test
+    void testAddProdukWithSameName() {
+        Produk tesProduk1 = new Produk();
+        tesProduk1.setProdukId("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
+        tesProduk1.setNama("Red Dead Redemption 2");
+        tesProduk1.setKategori("Open World");
+        tesProduk1.setHarga(350000);
+        tesProduk1.setDeskripsi("Prequel to RDR 1");
+        tesProduk1.setStokTersedia(100);
+        tesProduk1.setStokTerjual(10);
+        tesProduk1.setPenjual("Rockstar Store");
+        produkServiceImpl.addProduk(tesProduk1);
+
+        Produk tesProduk2 = new Produk();
+        tesProduk2.setProdukId("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3455");
+        tesProduk2.setNama("Red Dead Redemption 2");
+        tesProduk2.setKategori("Open World");
+        tesProduk2.setHarga(350000);
+        tesProduk2.setDeskripsi("Prequel to RDR 1");
+        tesProduk2.setStokTersedia(100);
+        tesProduk2.setStokTerjual(10);
+        tesProduk2.setPenjual("Rockstar Store");
+
+        when(produkRepository.findByNama("Red Dead Redemption 2")).thenReturn(Optional.of(tesProduk1));
+
+        assertThrows(RuntimeException.class, () -> produkServiceImpl.addProduk(tesProduk2));
+    }
 }

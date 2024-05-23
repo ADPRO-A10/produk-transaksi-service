@@ -43,22 +43,6 @@ public class ProdukRepositoryTest {
         assertFalse(produkList.isEmpty());
     }
 
-    //Unhappy Test
-    @Test
-    void createProduckWithSameName() {
-        Produk product1 = new Produk();
-        product1.setProdukId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setNama("Overwatch");
-        product1.setHarga(50000);
-        produkRepository.save(product1);
-
-        Produk product2 = new Produk();
-        product2.setProdukId("ef658e4x-2s69-510z-8862-72bq6afx65453ww");
-        product2.setNama("Overwatch");
-        product2.setHarga(25000);
-        assertThrows(RuntimeException.class, () -> produkRepository.save(product2));
-    }
-
     @Test
     void testFindProdukById() {
         Produk tesProduk1 = new Produk();
