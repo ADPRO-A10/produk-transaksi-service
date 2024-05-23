@@ -42,7 +42,11 @@ public class ProdukDirector{
         }
         @Override
         public ProdukBuilder stokTersedia(int stokTersedia) {
-            this.stokTersedia = stokTersedia;
+            if (stokTersedia < 0) {
+                throw new IllegalArgumentException("Stok yang diinput tidak valid");
+            } else {
+                this.stokTersedia = stokTersedia;
+            }
             return this;
         }
         public ProdukBuilder stokTerjual(int stokTerjual) {

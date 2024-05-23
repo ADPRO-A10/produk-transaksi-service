@@ -20,8 +20,6 @@ public class ProdukTest {
                 .penjual("Rockstar Store")
                 .build();
 
-        this.produk2 = new Produk();
-
     }
 
     @Test
@@ -66,7 +64,18 @@ public class ProdukTest {
 
     @Test
     void testProdukWithInvalidStok() {
-        assertThrows(IllegalArgumentException.class, () -> this.produk2.setStokTersedia(-100));
+        ProdukDirector.ProdukBuilder produkBuilder = new ProdukDirector.ProdukBuilder();
+        assertThrows(IllegalArgumentException.class, () -> {
+            produkBuilder
+                    .id("1")
+                    .nama("Test Product")
+                    .harga(1000)
+                    .kategori("Test Category")
+                    .deskripsi("Test Description")
+                    .stokTersedia(-1)
+                    .penjual("Test Seller")
+                    .build();
+        });
     }
 
     @Test
