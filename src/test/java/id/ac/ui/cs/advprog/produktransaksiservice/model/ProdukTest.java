@@ -6,9 +6,10 @@ import org.junit.jupiter.api.Test;
 public class ProdukTest {
     Produk produk1;
     Produk produk2;
+    ProdukDirector.ProdukBuilder produkBuilder = new ProdukDirector.ProdukBuilder();
+
     @BeforeEach
     void setup() {
-        ProdukDirector.ProdukBuilder produkBuilder = new ProdukDirector.ProdukBuilder();
         this.produk1 = produkBuilder
                 .id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
                 .nama("Red Dead Redemption 2")

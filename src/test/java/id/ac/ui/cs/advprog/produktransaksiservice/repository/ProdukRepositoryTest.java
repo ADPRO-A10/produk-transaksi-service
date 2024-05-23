@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.produktransaksiservice.repository;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
+import id.ac.ui.cs.advprog.produktransaksiservice.model.ProdukDirector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,21 +23,24 @@ public class ProdukRepositoryTest {
     @Autowired
     ProdukRepository produkRepository;
 
+    ProdukDirector.ProdukBuilder produkBuilder = new ProdukDirector.ProdukBuilder();
+
     @BeforeEach
     void setup() {
     }
 
     @Test
     void testCreateProduk() {
-        Produk tesProduk1 = new Produk();
-        tesProduk1.setProdukId("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
-        tesProduk1.setNama("Red Dead Redemption 2");
-        tesProduk1.setKategori("Open World");
-        tesProduk1.setHarga(350000);
-        tesProduk1.setDeskripsi("Prequel to RDR 1");
-        tesProduk1.setStokTersedia(100);
-        tesProduk1.setStokTerjual(10);
-        tesProduk1.setPenjual("Rockstar Store");
+
+        Produk tesProduk1 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+                .nama("Red Dead Redemption 2")
+                .kategori("Open World")
+                .harga(350000)
+                .deskripsi("Prequel to RDR 1")
+                .stokTersedia(100)
+                .stokTerjual(10)
+                .penjual("Rockstar Store")
+                .build();
         produkRepository.save(tesProduk1);
 
         List<Produk> produkList = produkRepository.findAll();
@@ -45,15 +49,15 @@ public class ProdukRepositoryTest {
 
     @Test
     void testFindProdukById() {
-        Produk tesProduk1 = new Produk();
-        tesProduk1.setProdukId("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
-        tesProduk1.setNama("Red Dead Redemption 2");
-        tesProduk1.setKategori("Open World");
-        tesProduk1.setHarga(350000);
-        tesProduk1.setDeskripsi("Prequel to RDR 1");
-        tesProduk1.setStokTersedia(100);
-        tesProduk1.setStokTerjual(10);
-        tesProduk1.setPenjual("Rockstar Store");
+        Produk tesProduk1 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+                .nama("Red Dead Redemption 2")
+                .kategori("Open World")
+                .harga(350000)
+                .deskripsi("Prequel to RDR 1")
+                .stokTersedia(100)
+                .stokTerjual(10)
+                .penjual("Rockstar Store")
+                .build();
         produkRepository.save(tesProduk1);
 
         Produk findedProduk = produkRepository.findById(tesProduk1.getProdukId()).orElse(null);
@@ -76,15 +80,15 @@ public class ProdukRepositoryTest {
 
     @Test
     void testDeleteProduk() {
-        Produk tesProduk1 = new Produk();
-        tesProduk1.setProdukId("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
-        tesProduk1.setNama("Red Dead Redemption 2");
-        tesProduk1.setKategori("Open World");
-        tesProduk1.setHarga(350000);
-        tesProduk1.setDeskripsi("Prequel to RDR 1");
-        tesProduk1.setStokTersedia(100);
-        tesProduk1.setStokTerjual(10);
-        tesProduk1.setPenjual("Rockstar Store");
+        Produk tesProduk1 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+                .nama("Red Dead Redemption 2")
+                .kategori("Open World")
+                .harga(350000)
+                .deskripsi("Prequel to RDR 1")
+                .stokTersedia(100)
+                .stokTerjual(10)
+                .penjual("Rockstar Store")
+                .build();
         produkRepository.save(tesProduk1);
         List<Produk> produkList = produkRepository.findAll();
         assertFalse(produkList.isEmpty());
@@ -98,25 +102,26 @@ public class ProdukRepositoryTest {
 
     @Test
     void testEditProduk() {
-        Produk tesProduk1 = new Produk();
-        tesProduk1.setProdukId("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
-        tesProduk1.setNama("Red Dead Redemption 2");
-        tesProduk1.setKategori("Open World");
-        tesProduk1.setHarga(350000);
-        tesProduk1.setDeskripsi("Prequel to RDR 1");
-        tesProduk1.setStokTersedia(100);
-        tesProduk1.setStokTerjual(10);
-        tesProduk1.setPenjual("Rockstar Store");
+        Produk tesProduk1 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+                .nama("Red Dead Redemption 2")
+                .kategori("Open World")
+                .harga(350000)
+                .deskripsi("Prequel to RDR 1")
+                .stokTersedia(100)
+                .stokTerjual(10)
+                .penjual("Rockstar Store")
+                .build();
         produkRepository.save(tesProduk1);
 
-        Produk tesProduk2 = new Produk();
-        tesProduk2.setNama("Red Dead Redemption 2");
-        tesProduk2.setKategori("Open World");
-        tesProduk2.setHarga(10000);
-        tesProduk2.setStokTersedia(500);
-        tesProduk2.setDeskripsi("Testing Desc");
-        tesProduk2.setStokTerjual(10);
-        tesProduk2.setPenjual("Rockstar Store");
+        Produk tesProduk2 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+                .nama("Red Dead Redemption 2")
+                .kategori("Open World")
+                .harga(10000)
+                .deskripsi("Testing Desc")
+                .stokTersedia(500)
+                .stokTerjual(10)
+                .penjual("Rockstar Store")
+                .build();
 
         tesProduk2.setProdukId(produkRepository.findById(tesProduk1.getProdukId()).orElse(null).getProdukId());
         produkRepository.save(tesProduk2);
