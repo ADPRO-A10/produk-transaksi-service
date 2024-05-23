@@ -17,9 +17,13 @@ import java.util.List;
 public class ProdukController {
 
     private ProdukDirector.ProdukBuilder produkBuilder;
+    private ProdukServiceImpl produkServiceImpl;
 
     @Autowired
-    private ProdukServiceImpl produkServiceImpl;
+    ProdukController(ProdukServiceImpl produkServiceImpl) {
+        this.produkServiceImpl = produkServiceImpl;
+        this.produkBuilder = new ProdukDirector.ProdukBuilder();
+    }
 
     @GetMapping("")
     public String showProdukPage(Model model){
@@ -30,27 +34,45 @@ public class ProdukController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Produk>> listProduk(){
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(produkServiceImpl.findAll(), HttpStatus.OK);
     }
 
     @GetMapping({"/{id}"})
     public ResponseEntity<Produk> getProdukById(@PathVariable String id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        Produk produk = produkServiceImpl.findProdukById(id);
+        if (produk == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(produk, HttpStatus.OK);
     }
 
     @PostMapping("/create")
     public ResponseEntity<Produk> createProduk(@RequestBody Produk produk) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            Produk createdProduk = produkServiceImpl.createProduk(produk);
+            return new ResponseEntity<>(createdProduk, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(produk, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("edit/{id}")
     public ResponseEntity<Produk> editProduk(@PathVariable String id, @RequestBody Produk updatedProduk) {
-        return new ResponseEntity<>(HttpStatus.OK);
-
+        if (produkServiceImpl.findProdukById(id) == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            Produk produk = produkServiceImpl.editProduk(id, updatedProduk);
+            return new ResponseEntity<>(produk, HttpStatus.OK);
+        }
     }
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Produk> deleteProduk(@PathVariable String id) {
+        Produk produk = produkServiceImpl.findProdukById(id);
+        if (produk == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        produkServiceImpl.deleteProduk(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
