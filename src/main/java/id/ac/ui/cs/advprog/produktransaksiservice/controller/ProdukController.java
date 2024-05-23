@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.produktransaksiservice.controller;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
+import id.ac.ui.cs.advprog.produktransaksiservice.model.ProdukDirector;
+import id.ac.ui.cs.advprog.produktransaksiservice.service.ProdukServiceImpl;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import id.ac.ui.cs.advprog.produktransaksiservice.repository.ProdukRepository;
@@ -8,35 +10,47 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 public class ProdukController {
 
+    private ProdukDirector.ProdukBuilder produkBuilder;
+
     @Autowired
-    ProdukRepository produkRepository;
+    private ProdukServiceImpl produkServiceImpl;
+
     @GetMapping("")
     public String showProdukPage(Model model){
+
         return "Hello Produk";
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createProduct(@RequestBody Produk product) {
-        Produk createdProduct = produkRepository.create(product);
-        return ResponseEntity.ok(createdProduct);
-    }
 
     @GetMapping("/list")
-    public String showReadProdukPage(Model model){
-        return "Hello Read Produk";
+    public ResponseEntity<List<Produk>> listProduk(){
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/edit")
-    public String showEditProdukPage(Model model){
-        return "Hello Edit Produk";
+    @GetMapping({"/{id}"})
+    public ResponseEntity<Produk> getProdukById(@PathVariable String id) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/delete")
-    public String showDeleteProdukPage(Model model){
-        return "Hello Delete Produk";
+    @PostMapping("/create")
+    public ResponseEntity<Produk> createProduk(@RequestBody Produk produk) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("edit/{id}")
+    public ResponseEntity<Produk> editProduk(@PathVariable String id, @RequestBody Produk updatedProduk) {
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Produk> deleteProduk(@PathVariable String id) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
