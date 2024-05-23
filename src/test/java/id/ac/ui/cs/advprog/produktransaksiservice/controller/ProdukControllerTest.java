@@ -81,7 +81,7 @@ public class ProdukControllerTest {
                 .build();
 
         when(produkServiceImpl.createProduk(produk2)).thenReturn(null);
-        ResponseEntity<Produk> response2 = produkController.createProduk(produk);
+        ResponseEntity<Produk> response2 = produkController.createProduk(produk2);
 
         assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
     }
