@@ -8,6 +8,7 @@ public interface ProdukService {
     Produk findProdukById(String id);
     Produk createProduk(Produk produk);
     Produk editProduk(String id, Produk updatedProduk);
-    Produk deleteProduk(String id);
+    void deleteProduk(String id);
+    Produk findProdukByNama(String nama);
     List<Produk> findAll();
 }

@@ -19,6 +19,11 @@ public class ProdukServiceImpl implements ProdukService {
     }
 
     @Override
+    public Produk findProdukByNama(String nama) {
+        return produkRepository.findByNama(nama).orElse(null);
+    }
+
+    @Override
     public Produk createProduk(Produk produk) {
         if(produkRepository.findByNama(produk.getNama()).isPresent()){
             throw new RuntimeException("Produk dengan nama tersebut sudah ada");
@@ -49,12 +54,11 @@ public class ProdukServiceImpl implements ProdukService {
     }
 
     @Override
-    public Produk deleteProduk(String id) {
+    public void deleteProduk(String id) {
         Produk produk = produkRepository.findById(id).orElse(null);
         if (produk == null) {
-            return null;
+            return;
         }
         produkRepository.delete(produk);
-        return produk;
     }
 }
