@@ -57,7 +57,7 @@ public class ProdukServiceImpl implements ProdukService {
     public void deleteProduk(String id) {
         Produk produk = produkRepository.findById(id).orElse(null);
         if (produk == null) {
-            return;
+            throw new RuntimeException("Produk tidak ditemukan");
         }
         produkRepository.delete(produk);
     }
