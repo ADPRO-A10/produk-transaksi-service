@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface TransaksiService {
     Transaksi createTransaksi(Transaksi transaksi);
-    Optional<Transaksi> checkout(UUID transaksiId);
+    Optional<Transaksi> getTransaksi(UUID transaksiId);
     Long sumHarga(List<Produk> listProduk);
     void validateTransaksi(Pembeli pembeli, Transaksi transaksi, long totalHarga);
     Transaksi processTransaksi(Pembeli pembeli, List<Penjual> listPenjual, List<Produk> listProduk);

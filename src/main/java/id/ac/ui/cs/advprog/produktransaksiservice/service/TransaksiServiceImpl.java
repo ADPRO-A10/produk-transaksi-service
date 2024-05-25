@@ -24,7 +24,7 @@ public class TransaksiServiceImpl implements TransaksiService {
         return transaksiRepository.save(transaksi);
     }
     @Override
-    public Optional<Transaksi> checkout(UUID transaksiId) {
+    public Optional<Transaksi> getTransaksi(UUID transaksiId) {
         return transaksiRepository.findById(transaksiId);
     }
 

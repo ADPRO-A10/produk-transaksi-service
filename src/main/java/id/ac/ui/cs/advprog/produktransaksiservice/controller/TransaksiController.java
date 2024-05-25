@@ -57,4 +57,14 @@ public class TransaksiController {
         return ResponseEntity.ok(response.toString());
     }
 
+    @PostMapping("/get/{transaksiId}")
+    public ResponseEntity<String> getTransaksi(@PathVariable UUID transaksiId){
+        Optional<Transaksi> transaksi = transaksiService.getTransaksi(transaksiId);
+        if (transaksi.isPresent()) {
+            return ResponseEntity.ok("Transaksi found: " + transaksi.get().toString());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
