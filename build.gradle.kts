@@ -51,6 +51,13 @@ tasks.jacocoTestReport {
     classDirectories.setFrom(files(classDirectories.files.map {
         fileTree(it) { exclude("**/*Application**") }
     }))
+    classDirectories.setFrom(files(classDirectories.files.map {
+        fileTree(it) { exclude("**/*Review**") }
+    }))
+    classDirectories.setFrom(files(classDirectories.files.map {
+        fileTree(it) { exclude("**/id/ac/ui/cs/advprog/produktransaksiservice/model/ProdukDirector.class") }
+    }))
+    classDirectories.setFrom(files(classDirectories))
     dependsOn(tasks.test) // tests are required to run before generating the report
     reports {
         xml.required.set(false)
