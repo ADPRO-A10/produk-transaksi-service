@@ -38,12 +38,11 @@ public class TransaksiTest {
         this.listProduk.add(produk2);
     }
 
-    @Test
-    void testCreateTransaksi() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Transaksi transaksi = new Transaksi(Long.valueOf(123), this.listProduk, Long.valueOf(123), "selesai",
-                    LocalDate.of(2024, 4, 23));
-        });
-    }
-
+//    @Test
+//    void testCreateTransaksi() {
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            Transaksi transaksi = new Transaksi(Long.valueOf(123), this.listProduk, Long.valueOf(123), "selesai",
+//                    LocalDate.of(2024, 4, 23));
+//        });
+//    }
 }

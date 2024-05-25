@@ -27,7 +27,7 @@ public class TransaksiServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        transaksiRepository = new TransaksiRepository();
+
 
         List<Produk>  listProduk = new ArrayList<>();
         Produk produk1 = new Produk();
@@ -41,30 +41,30 @@ public class TransaksiServiceImplTest {
         produk1.setPenjual("ngeong");
         listProduk.add(produk1);
 
-        transaksiList = new ArrayList<>();
-        Transaksi transaksi1 = new Transaksi(Long.valueOf(123), listProduk, Long.valueOf(123), "selesai",
-                LocalDate.of(2024, 4, 23));
-        transaksiList.add(transaksi1);
-        Transaksi transaksi2 = new Transaksi(Long.valueOf(345), listProduk, Long.valueOf(345), "selesai",
-                LocalDate.of(2024, 4, 24));
-        transaksiList.add(transaksi2);
+//        transaksiList = new ArrayList<>();
+//        Transaksi transaksi1 = new Transaksi(Long.valueOf(123), listProduk, Long.valueOf(123), "selesai",
+//                LocalDate.of(2024, 4, 23));
+//        transaksiList.add(transaksi1);
+//        Transaksi transaksi2 = new Transaksi(Long.valueOf(345), listProduk, Long.valueOf(345), "selesai",
+//                LocalDate.of(2024, 4, 24));
+//        transaksiList.add(transaksi2);
     }
 
     @Test
     void testCreateTransaksi() {
         Transaksi transaksi = transaksiList.get(1);
-        doReturn(transaksi).when(transaksiRepository).createTransaksi(transaksi);
+        doReturn(transaksi).when(transaksiRepository).save(transaksi);
 
         Transaksi result = transaksiService.createTransaksi(transaksi);
-        verify(transaksiRepository, times(1)).createTransaksi(transaksi);
+        verify(transaksiRepository, times(1)).save(transaksi);
         assertEquals(transaksi.getTransaksiId(), result.getTransaksiId());
     }
     @Test
     void testFindById() {
         Transaksi transaksi = transaksiList.get(1);
-        doReturn(transaksi).when(transaksiRepository).findTransaksiById(transaksi.getTransaksiId());
+        doReturn(transaksi).when(transaksiRepository).findById(transaksi.getTransaksiId().toString());
 
-        Transaksi result = transaksiService.checkout(transaksi.getTransaksiId());
+        Transaksi result = transaksiService.checkout(Long.valueOf(transaksi.getTransaksiId().toString())).orElse(null);
         assertEquals(transaksi.getTransaksiId(), result.getTransaksiId());
     }
 }
