@@ -4,12 +4,8 @@ import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Transaksi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
-
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -20,7 +16,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @SpringBootTest
 public class TransaksiRepositoryTest {
 
@@ -28,9 +23,6 @@ public class TransaksiRepositoryTest {
     TransaksiRepository transaksiRepository;
 
     List<Transaksi> listTransaksi;
-
-    @Autowired
-    TransaksiRepository transaksiRepository;
 
     @BeforeEach
     void setUp() {
@@ -45,6 +37,7 @@ public class TransaksiRepositoryTest {
         produk1.setStokTerjual(1);
         produk1.setPenjual("ngeong");
         listProduk.add(produk1);
+
         listTransaksi = new ArrayList<>();
         Transaksi transaksi1 = new Transaksi.Builder()
                 .transaksiId(UUID.randomUUID())
