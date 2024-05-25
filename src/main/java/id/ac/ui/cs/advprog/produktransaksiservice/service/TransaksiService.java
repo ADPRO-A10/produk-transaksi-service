@@ -7,9 +7,12 @@ import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface TransaksiService {
     Transaksi createTransaksi(Transaksi transaksi);
-    Optional<Transaksi> checkout(Long transaksiId);
-    void processTransaksi(Pembeli pembeli, List<Penjual> listPenjual, List<Produk> listProduk);
+    Optional<Transaksi> getTransaksi(UUID transaksiId);
+    Long sumHarga(List<Produk> listProduk);
+    void validateTransaksi(Pembeli pembeli, Transaksi transaksi, long totalHarga);
+    Transaksi processTransaksi(Pembeli pembeli, List<Penjual> listPenjual, List<Produk> listProduk);
 }

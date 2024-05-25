@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 public class TransaksiTest {
@@ -13,6 +15,7 @@ public class TransaksiTest {
 
     @BeforeEach
     void setUp() {
+        this.listProduk = new ArrayList<>();
 
         Produk produk1 = new Produk();
         produk1.setProdukId("123456");
@@ -38,11 +41,18 @@ public class TransaksiTest {
         this.listProduk.add(produk2);
     }
 
-//    @Test
-//    void testCreateTransaksi() {
-//        assertThrows(IllegalArgumentException.class, () -> {
-//            Transaksi transaksi = new Transaksi(Long.valueOf(123), this.listProduk, Long.valueOf(123), "selesai",
-//                    LocalDate.of(2024, 4, 23));
-//        });
-//    }
+    @Test
+    void testCreateTransaksi() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Transaksi transaksi = new Transaksi.Builder()
+                    .transaksiId(UUID.randomUUID())
+                    .listProduk(this.listProduk)
+                    .totalHarga(-1L)
+                    .statusPembayaran("selesai")
+                    .tanggalTransaksi(LocalDate.now())
+                    .build();
+        });
+    }
+
+
 }

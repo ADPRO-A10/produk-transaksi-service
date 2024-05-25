@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.produktransaksiservice.service;
 
+import id.ac.ui.cs.advprog.produktransaksiservice.model.Pembeli;
+import id.ac.ui.cs.advprog.produktransaksiservice.model.Penjual;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Transaksi;
 import id.ac.ui.cs.advprog.produktransaksiservice.repository.TransaksiRepository;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -23,13 +26,15 @@ public class TransaksiServiceImplTest {
     TransaksiServiceImpl transaksiService;
     @Mock
     TransaksiRepository transaksiRepository;
-    List<Transaksi> transaksiList;
+    List<Transaksi> listTransaksi;
+    List<Produk> listProduk;
+    List<Penjual> listPenjual;
 
     @BeforeEach
     void setUp() {
+        listProduk = new ArrayList<>(); // Initialize listProduk
+        listPenjual = new ArrayList<>(); // Initialize listPenjual
 
-
-        List<Produk>  listProduk = new ArrayList<>();
         Produk produk1 = new Produk();
         produk1.setProdukId("123456");
         produk1.setNama("meong");
@@ -40,31 +45,40 @@ public class TransaksiServiceImplTest {
         produk1.setStokTerjual(1);
         produk1.setPenjual("ngeong");
         listProduk.add(produk1);
+        listTransaksi = new ArrayList<>();
+        Transaksi transaksi1 = new Transaksi.Builder()
+                .transaksiId(UUID.randomUUID())
+                .listProduk(listProduk)
+                .totalHarga(Long.valueOf(123))
+                .statusPembayaran("selesai")
+                .tanggalTransaksi(LocalDate.now())
+                .build();
+        listTransaksi.add(transaksi1);
+        Transaksi transaksi2 = new Transaksi.Builder()
+                .transaksiId(UUID.randomUUID())
+                .listProduk(listProduk)
+                .totalHarga(Long.valueOf(345))
+                .statusPembayaran("selesai")
+                .tanggalTransaksi(LocalDate.now())
+                .build();
+        listTransaksi.add(transaksi1);
+        listTransaksi.add(transaksi2);
 
-//        transaksiList = new ArrayList<>();
-//        Transaksi transaksi1 = new Transaksi(Long.valueOf(123), listProduk, Long.valueOf(123), "selesai",
-//                LocalDate.of(2024, 4, 23));
-//        transaksiList.add(transaksi1);
-//        Transaksi transaksi2 = new Transaksi(Long.valueOf(345), listProduk, Long.valueOf(345), "selesai",
-//                LocalDate.of(2024, 4, 24));
-//        transaksiList.add(transaksi2);
+        Penjual penjual = new Penjual();
+        penjual.setUsername("ngeong");
+        penjual.setKatalog(listProduk);
+        penjual.setRiwayatTransaksi(new ArrayList<>());
+        listPenjual.add(penjual);
     }
+    
+    @Test
+    void testCreateTransaksi() {
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(5000);
+        pembeli.setLibrary(new ArrayList<>());
+        pembeli.setRiwayatTransaksi(new ArrayList<>());
 
-//    @Test
-//    void testCreateTransaksi() {
-//        Transaksi transaksi = transaksiList.get(1);
-//        doReturn(transaksi).when(transaksiRepository).save(transaksi);
-//
-//        Transaksi result = transaksiService.createTransaksi(transaksi);
-//        verify(transaksiRepository, times(1)).save(transaksi);
-//        assertEquals(transaksi.getTransaksiId(), result.getTransaksiId());
-//    }
-//    @Test
-//    void testFindById() {
-//        Transaksi transaksi = transaksiList.get(1);
-//        doReturn(transaksi).when(transaksiRepository).findById(transaksi.getTransaksiId().toString());
-//
-//        Transaksi result = transaksiService.checkout(Long.valueOf(transaksi.getTransaksiId().toString())).orElse(null);
-//        assertEquals(transaksi.getTransaksiId(), result.getTransaksiId());
-//    }
+        transaksiService.processTransaksi(pembeli, listPenjual, listProduk);
+    }
 }
