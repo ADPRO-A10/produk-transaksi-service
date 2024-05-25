@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -80,5 +81,16 @@ public class TransaksiServiceImplTest {
         pembeli.setRiwayatTransaksi(new ArrayList<>());
 
         transaksiService.processTransaksi(pembeli, listPenjual, listProduk);
+    }
+
+    @Test
+    void testTooLittleBalance() {
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(1000);
+        pembeli.setLibrary(new ArrayList<>());
+        pembeli.setRiwayatTransaksi(new ArrayList<>());
+        assertThrows(IllegalArgumentException.class, () -> {transaksiService.processTransaksi(pembeli, listPenjual, listProduk);
+        });
     }
 }

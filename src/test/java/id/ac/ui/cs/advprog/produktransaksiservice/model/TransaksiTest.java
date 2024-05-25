@@ -43,6 +43,17 @@ public class TransaksiTest {
 
     @Test
     void testCreateTransaksi() {
+            Transaksi transaksi = new Transaksi.Builder()
+                    .transaksiId(UUID.randomUUID())
+                    .listProduk(this.listProduk)
+                    .totalHarga(100L)
+                    .statusPembayaran("selesai")
+                    .tanggalTransaksi(LocalDate.now())
+                    .build();
+    }
+
+    @Test
+    void testInvalidTotalHarga() {
         assertThrows(IllegalArgumentException.class, () -> {
             Transaksi transaksi = new Transaksi.Builder()
                     .transaksiId(UUID.randomUUID())
@@ -53,6 +64,5 @@ public class TransaksiTest {
                     .build();
         });
     }
-
 
 }
