@@ -31,6 +31,16 @@ class ProdukServiceImplTest {
 
     ProdukDirector.ProdukBuilder produkBuilder = new ProdukDirector.ProdukBuilder();
 
+    Produk tesProduk1 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
+            .nama("Red Dead Redemption 2")
+            .kategori("Open World")
+            .harga(350000)
+            .deskripsi("Prequel to RDR 1")
+            .stokTersedia(100)
+            .stokTerjual(10)
+            .penjual("Rockstar Store")
+            .build();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -38,15 +48,6 @@ class ProdukServiceImplTest {
 
     @Test
     void testGetProdukById() {
-        Produk tesProduk1 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
-                .nama("Red Dead Redemption 2")
-                .kategori("Open World")
-                .harga(350000)
-                .deskripsi("Prequel to RDR 1")
-                .stokTersedia(100)
-                .stokTerjual(10)
-                .penjual("Rockstar Store")
-                .build();
         produkServiceImpl.createProduk(tesProduk1);
 
         when(produkRepository.findById("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")).thenReturn(Optional.of(tesProduk1));
@@ -61,7 +62,6 @@ class ProdukServiceImplTest {
         assertEquals(100, findProduk.getStokTersedia());
         assertEquals(10, findProduk.getStokTerjual());
         assertEquals("Rockstar Store", findProduk.getPenjual());
-
     }
 
     @Test
@@ -69,6 +69,23 @@ class ProdukServiceImplTest {
         when(produkRepository.findById("123")).thenReturn(Optional.empty());
         Produk result = produkServiceImpl.findProdukById("123");
         assertNull(result);
+    }
+
+    @Test
+    void testGetProdukByNama() {
+        produkServiceImpl.createProduk(tesProduk1);
+
+        when(produkRepository.findByNama("Red Dead Redemption 2")).thenReturn(Optional.of(tesProduk1));
+        Produk findProduk = produkServiceImpl.findProdukByNama("Red Dead Redemption 2");
+
+        assertNotNull(findProduk);
+        assertEquals("Red Dead Redemption 2", findProduk.getNama());
+        assertEquals("Prequel to RDR 1", findProduk.getDeskripsi());
+        assertEquals("Open World", findProduk.getKategori());
+        assertEquals(350000, findProduk.getHarga());
+        assertEquals(100, findProduk.getStokTersedia());
+        assertEquals(10, findProduk.getStokTerjual());
+        assertEquals("Rockstar Store", findProduk.getPenjual());
     }
 
     @Test
@@ -97,7 +114,6 @@ class ProdukServiceImplTest {
                         .penjual("Seller A")
                         .build();
 
-
         produkServiceImpl.editProduk("123", updatedProduk);
 
 
@@ -112,7 +128,7 @@ class ProdukServiceImplTest {
     }
 
     @Test
-    void testEditProduk_NotFound() {
+    void testEditProdukNotFound() {
         Produk updatedProduk = new Produk();
         updatedProduk.setNama("Product B");
 
@@ -125,16 +141,6 @@ class ProdukServiceImplTest {
 
     @Test
     void testAddProdukWithSameName() {
-        Produk tesProduk1 = produkBuilder.
-                id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
-                .nama("Red Dead Redemption 2")
-                .kategori("Open World")
-                .harga(350000)
-                .deskripsi("Prequel to RDR 1")
-                .stokTersedia(100)
-                .stokTerjual(10)
-                .penjual("Rockstar Store")
-                .build();
         produkServiceImpl.createProduk(tesProduk1);
 
         Produk tesProduk2 = produkBuilder.
@@ -156,16 +162,6 @@ class ProdukServiceImplTest {
 
     @Test
     void testFindAll() {
-        Produk tesProduk1 = produkBuilder.
-                id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
-                .nama("Red Dead Redemption 2")
-                .kategori("Open World")
-                .harga(350000)
-                .deskripsi("Prequel to RDR 1")
-                .stokTersedia(100)
-                .stokTerjual(10)
-                .penjual("Rockstar Store")
-                .build();
         produkServiceImpl.createProduk(tesProduk1);
 
         Produk tesProduk2 = produkBuilder.
@@ -198,5 +194,24 @@ class ProdukServiceImplTest {
         assertEquals(tesProduk2.getStokTerjual(), produkServiceImpl.findAll().getLast().getStokTerjual());
         assertEquals(tesProduk1.getPenjual(), produkServiceImpl.findAll().getFirst().getPenjual());
         assertEquals(tesProduk2.getPenjual(), produkServiceImpl.findAll().getLast().getPenjual());
+    }
+
+    @Test
+    void testDeleteprodukSuccess() {
+        produkServiceImpl.createProduk(tesProduk1);
+
+        when(produkRepository.findById("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")).thenReturn(Optional.of(tesProduk1));
+        assertDoesNotThrow(() -> {
+            produkServiceImpl.deleteProduk("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
+        });
+    }
+
+    @Test
+    void testDeleteProductFailed() {
+        when(produkRepository.findById("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")).thenReturn(Optional.empty());
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            produkServiceImpl.deleteProduk("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
+        });
+        assertEquals("Produk tidak ditemukan", exception.getMessage());
     }
 }

@@ -50,7 +50,7 @@ public class Produk {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
     public Produk() {
     }
