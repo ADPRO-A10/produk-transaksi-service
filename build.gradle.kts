@@ -3,7 +3,15 @@ plugins {
     id("org.springframework.boot") version "3.2.4"
     id("io.spring.dependency-management") version "1.1.4"
     jacoco
-    id("org.sonarqube") version "3.3"
+    id("org.sonarqube") version "4.4.1.3373"
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "ADPRO-A10_produk-transaksi-service")
+        property("sonar.organization", "adpro-a10")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
 
 group = "id.ac.ui.cs.advprog"
@@ -61,9 +69,9 @@ tasks.jacocoTestReport {
     classDirectories.setFrom(files(classDirectories))
     dependsOn(tasks.test) // tests are required to run before generating the report
     reports {
-        html.required = true
-        xml.required = true
-        csv.required.set(false)
+        html.required.set(true)
+        xml.required.set(true)
+        csv.required.set(true)
         html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
     }
 }
