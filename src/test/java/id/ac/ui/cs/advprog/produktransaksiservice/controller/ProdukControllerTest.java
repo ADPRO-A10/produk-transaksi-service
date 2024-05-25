@@ -67,8 +67,6 @@ public class ProdukControllerTest {
                 .penjual("Rockstar Store")
                 .build();
 
-        when(produkServiceImpl.createProduk(produk)).thenReturn(produk);
-        ResponseEntity<Produk> response = produkController.createProduk(produk);
 
         Produk produk2 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")
                 .nama("Red Dead Redemption 2")
@@ -80,10 +78,14 @@ public class ProdukControllerTest {
                 .penjual("Rockstar Store")
                 .build();
 
-        when(produkServiceImpl.createProduk(produk2)).thenReturn(null);
-        ResponseEntity<Produk> response2 = produkController.createProduk(produk2);
+        when(produkServiceImpl.createProduk(produk)).thenReturn(produk);
+        ResponseEntity<Produk> response1 = produkController.createProduk(produk);
+        assertEquals(HttpStatus.CREATED, response1.getStatusCode());
+        assertEquals(produk, response1.getBody());
 
-        assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
+        when(produkServiceImpl.createProduk(produk2)).thenThrow(new RuntimeException());
+        ResponseEntity<Produk> response = produkController.createProduk(produk2);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
 
