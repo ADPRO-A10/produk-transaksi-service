@@ -51,8 +51,8 @@ public class ProdukController {
         try {
             Produk createdProduk = produkServiceImpl.createProduk(produk);
             return new ResponseEntity<>(createdProduk, HttpStatus.CREATED);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(produk, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
