@@ -129,7 +129,7 @@ class ProdukServiceImplTest {
     }
 
     @Test
-    void testEditProduk_NotFound() {
+    void testEditProdukNotFound() {
         Produk updatedProduk = new Produk();
         updatedProduk.setNama("Product B");
 
