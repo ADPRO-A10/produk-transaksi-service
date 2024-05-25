@@ -16,9 +16,4 @@ public class TransactionInvoker {
         }
     }
 
-    public void undoCommands() {
-        for (TransactionCommand command : commandList) {
-            command.undo();
-        }
-    }
 }

@@ -17,9 +17,4 @@ public class UpdateStockCommand implements TransactionCommand {
         produk.setStokTerjual(produk.getStokTerjual() + quantity);
     }
 
-    @Override
-    public void undo() {
-        produk.setStokTersedia(produk.getStokTersedia() + quantity);
-        produk.setStokTerjual(produk.getStokTerjual() - quantity);
-    }
 }

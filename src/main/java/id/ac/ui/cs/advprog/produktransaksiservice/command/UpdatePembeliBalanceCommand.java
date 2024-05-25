@@ -1,11 +1,14 @@
 package id.ac.ui.cs.advprog.produktransaksiservice.command;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Pembeli;
+import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 
-public class DeductMoneyCommand implements TransactionCommand {
+import java.util.List;
+
+public class UpdatePembeliBalanceCommand implements TransactionCommand {
     private Pembeli pembeli;
     private long totalHarga;
 
-    public DeductMoneyCommand(Pembeli pembeli, long totalHarga) {
+    public UpdatePembeliBalanceCommand(Pembeli pembeli, long totalHarga) {
         this.pembeli = pembeli;
         this.totalHarga = totalHarga;
     }
@@ -15,8 +18,4 @@ public class DeductMoneyCommand implements TransactionCommand {
         pembeli.setBalance(pembeli.getBalance() - totalHarga);
     }
 
-    @Override
-    public void undo() {
-        pembeli.setBalance(pembeli.getBalance() + totalHarga);
-    }
 }

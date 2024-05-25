@@ -21,10 +21,4 @@ public class AddLibraryCommand implements TransactionCommand {
         }
     }
 
-    @Override
-    public void undo() {
-        for (Produk produk: listProduk) {
-            pembeli.getLibrary().remove(produk);
-        }
-    }
 }

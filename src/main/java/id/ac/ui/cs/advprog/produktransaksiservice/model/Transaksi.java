@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ import java.util.List;
 public class Transaksi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transaksiId;
+    private UUID transaksiId;
     private List<Produk> listProduk;
     private Long totalHarga;
     private String statusPembayaran;
@@ -29,13 +30,13 @@ public class Transaksi {
     }
 
     public static class Builder {
-        private Long transaksiId;
+        private UUID transaksiId;
         private List<Produk> listProduk;
         private Long totalHarga;
         private String statusPembayaran;
         private LocalDate tanggalTransaksi;
 
-        public Builder transaksiId(Long transaksiId) {
+        public Builder transaksiId(UUID transaksiId) {
             this.transaksiId = transaksiId;
             return this;
         }
