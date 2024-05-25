@@ -117,9 +117,10 @@ class ProdukServiceImplTest {
         updatedProduk.setNama("Product B");
 
         when(produkRepository.findById("123")).thenReturn(Optional.empty());
-        Produk result = produkServiceImpl.editProduk("123", updatedProduk);
-
-        assertNull(result);
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            produkServiceImpl.editProduk("123", updatedProduk);
+        });
+        assertEquals("Produk tidak ditemukan", exception.getMessage());
     }
 
     @Test

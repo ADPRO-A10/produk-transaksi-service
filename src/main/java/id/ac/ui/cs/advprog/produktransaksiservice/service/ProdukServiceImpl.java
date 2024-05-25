@@ -36,7 +36,7 @@ public class ProdukServiceImpl implements ProdukService {
     public Produk editProduk(String id, Produk updatedProduk) {
         Produk produk = produkRepository.findById(id).orElse(null);
         if (produk == null) {
-            return null;
+            throw new RuntimeException("Produk tidak ditemukan");
         }
         produk.setNama(updatedProduk.getNama());
         produk.setHarga(updatedProduk.getHarga());
