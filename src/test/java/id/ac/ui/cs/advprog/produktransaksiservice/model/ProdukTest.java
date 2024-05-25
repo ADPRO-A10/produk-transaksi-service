@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 public class ProdukTest {
     Produk produk1;
     Produk produk2;
@@ -73,10 +75,27 @@ public class ProdukTest {
                     .harga(1000)
                     .kategori("Test Category")
                     .deskripsi("Test Description")
-                    .stokTersedia(-1)
+                    .stokTersedia(-10)
                     .penjual("Test Seller")
                     .build();
         });
+    }
+
+    @Test
+    void testProdukWithInvalidStokMessage() {
+        ProdukDirector.ProdukBuilder produkBuilder = new ProdukDirector.ProdukBuilder();
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            produkBuilder
+                    .id("1")
+                    .nama("Test Product")
+                    .harga(1000)
+                    .kategori("Test Category")
+                    .deskripsi("Test Description")
+                    .stokTersedia(-10)
+                    .penjual("Test Seller")
+                    .build();
+        });
+        assertEquals("Stok yang diinput tidak valid", exception.getMessage());
     }
 
     @Test
@@ -125,5 +144,35 @@ public class ProdukTest {
     void testPenjual() {
         this.produk1.setPenjual("Rockstar RDR Store");
         assertEquals("Rockstar RDR Store", this.produk1.getPenjual());
+    }
+
+    @Test
+    void testGetReviews() {
+        Review review1 = new Review(produk1, "Reviewer1", "Great game!", 5);
+        Review review2 = new Review(produk1, "Reviewer2", "Not bad.", 3);
+        produk1.getReviews().add(review1);
+        produk1.getReviews().add(review2);
+        assertEquals(2, produk1.getReviews().size());
+        assertTrue(produk1.getReviews().contains(review1));
+        assertTrue(produk1.getReviews().contains(review2));
+    }
+
+    @Test
+    void testSetReviews() {
+        Review review1 = new Review(produk1, "Reviewer1", "Great game!", 5);
+        Review review2 = new Review(produk1, "Reviewer2", "Not bad", 3);
+        produk1.getReviews().add(review1);
+        produk1.getReviews().add(review2);
+
+        produk1.setReviews( new ArrayList<>());
+
+        assertEquals(0, produk1.getReviews().size());
+    }
+
+    @Test
+    void setStokInvalid() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            this.produk1.setStokTersedia(-1);
+        });
     }
 }

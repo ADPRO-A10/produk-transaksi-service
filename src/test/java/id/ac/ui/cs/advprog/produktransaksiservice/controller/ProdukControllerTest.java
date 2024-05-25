@@ -31,10 +31,23 @@ public class ProdukControllerTest {
     @InjectMocks
     private ProdukController produkController;
 
+    @InjectMocks
+    private HelloController helloController;
+
     ProdukDirector.ProdukBuilder produkBuilder = new ProdukDirector.ProdukBuilder();
 
     @BeforeEach
     void setup() {
+    }
+
+    @Test
+    void testHelloPage() {
+        assertEquals("Hello", helloController.helloPage(null));
+    }
+
+    @Test
+    void testShowProdukPage() {
+        assertEquals("Hello Produk", produkController.showProdukPage(null));
     }
 
     @Test
@@ -87,7 +100,6 @@ public class ProdukControllerTest {
         ResponseEntity<Produk> response = produkController.createProduk(produk2);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
-
 
     @Test
     void testGetAllProduk() {

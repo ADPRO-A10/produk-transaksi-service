@@ -45,7 +45,6 @@ public class TransaksiServiceImplTest {
         produk1.setStokTerjual(1);
         produk1.setPenjual("ngeong");
         listProduk.add(produk1);
-
         listTransaksi = new ArrayList<>();
         Transaksi transaksi1 = new Transaksi.Builder()
                 .transaksiId(UUID.randomUUID())
