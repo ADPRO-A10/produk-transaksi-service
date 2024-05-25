@@ -20,10 +20,12 @@ public class Transaksi {
     private Long totalHarga;
     private String statusPembayaran;
     private LocalDate tanggalTransaksi;
-
     private Transaksi(Builder builder) {
         this.transaksiId = builder.transaksiId;
         this.listProduk = builder.listProduk;
+        if (builder.totalHarga < 0L) {
+            throw new IllegalArgumentException("Total harga must be non-negative");
+        }
         this.totalHarga = builder.totalHarga;
         this.statusPembayaran = builder.statusPembayaran;
         this.tanggalTransaksi = builder.tanggalTransaksi;
@@ -64,5 +66,8 @@ public class Transaksi {
         public Transaksi build() {
             return new Transaksi(this);
         }
+
+
     }
+
 }

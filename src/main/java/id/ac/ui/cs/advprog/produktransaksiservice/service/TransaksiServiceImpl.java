@@ -24,21 +24,45 @@ public class TransaksiServiceImpl implements TransaksiService {
         return transaksiRepository.save(transaksi);
     }
     @Override
-    public Optional<Transaksi> checkout(Long transaksiId) {
-        return transaksiRepository.findById(String.valueOf(transaksiId));
+    public Optional<Transaksi> checkout(UUID transaksiId) {
+        return transaksiRepository.findById(transaksiId);
     }
 
     @Override
-    public void processTransaksi(Pembeli pembeli, List<Penjual> listPenjual, List<Produk> listProduk) {
-        long totalHarga = transaksiRepository.sumHarga();
+    public Long sumHarga(List<Produk> listProduk) {
+        long totalHarga = 0;
+        for (Produk produk : listProduk) {
+            totalHarga += produk.getHarga();
+        }
+        return totalHarga;
+    }
+
+    @Override
+    public void validateTransaksi(Pembeli pembeli, Transaksi transaksi, long totalHarga) {
+        if (pembeli.getBalance() < totalHarga) {
+            throw new IllegalArgumentException();
+        } else {
+            transaksi.setStatusPembayaran("SUCCESS");
+        }
+    }
+
+    @Override
+    public Transaksi processTransaksi(Pembeli pembeli, List<Penjual> listPenjual, List<Produk> listProduk) {
+        long totalHarga = sumHarga(listProduk);
         Transaksi transaksi = new Transaksi.Builder()
                 .transaksiId(UUID.randomUUID())
                 .listProduk(listProduk)
                 .totalHarga(totalHarga)
-                .statusPembayaran("SUCCESS")
+                .statusPembayaran("AWAITING PAYMENT")
                 .tanggalTransaksi(LocalDate.now())
                 .build();
-        //add validate
+
+        try {
+            validateTransaksi(pembeli, transaksi, totalHarga);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Insufficient Balance to Perform Transaction");
+        }
+
         TransactionInvoker invoker = new TransactionInvoker();
         invoker.addCommand(new AddLibraryCommand(pembeli, listProduk));
         for (Produk produk : listProduk) {
@@ -51,5 +75,7 @@ public class TransaksiServiceImpl implements TransaksiService {
         invoker.addCommand(new UpdatePembeliRiwayatCommand(pembeli, transaksi));
 
         invoker.executeCommands();
+
+        return transaksi;
     }
 }
