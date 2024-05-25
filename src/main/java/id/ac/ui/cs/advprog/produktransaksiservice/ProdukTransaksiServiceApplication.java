@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication()
 public class ProdukTransaksiServiceApplication {
     public static void main(String[] args) {
-
         SpringApplication.run(ProdukTransaksiServiceApplication.class, args);
     }
 
