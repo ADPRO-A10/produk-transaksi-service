@@ -30,13 +30,13 @@ public class TransaksiServiceImpl implements TransaksiService {
 
     @Override
     public void processTransaksi(Pembeli pembeli, List<Produk> listProduk) {
-        Transaksi transaksi = new Transaksi(listProduk);
-        long totalHarga = transaksi.countHarga();
+        Transaksi transaksi = new Transaksi.Builder().build();
+        long totalHarga = transaksiRepository.sumHarga();
         TransactionInvoker invoker = new TransactionInvoker();
         invoker.addCommand(new AddLibraryCommand(pembeli, listProduk));
         invoker.addCommand(new DeductMoneyCommand(pembeli, totalHarga));
         for (Produk produk : listProduk) {
-            invoker.addCommand(new UpdateStockCommand(produk, 1)); // Assuming quantity is 1 for simplicity
+            invoker.addCommand(new UpdateStockCommand(produk, 1));
         }
         invoker.addCommand(new AddLibraryCommand(pembeli, listProduk));
         invoker.addCommand(new DeductMoneyCommand(pembeli, totalHarga));

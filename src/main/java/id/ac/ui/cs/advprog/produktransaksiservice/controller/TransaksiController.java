@@ -31,7 +31,7 @@ public class TransaksiController {
 
     @PostMapping
     public ResponseEntity<String> createTransaksi() throws JsonProcessingException {
-        Transaksi transaksi = new Transaksi();
+        Transaksi transaksi = new Transaksi.Builder().build();
         List<Produk> listProduk = new ArrayList<>();
         transaksi.setListProduk(listProduk);
 

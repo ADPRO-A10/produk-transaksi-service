@@ -1,13 +1,12 @@
 package id.ac.ui.cs.advprog.produktransaksiservice.model;
+
+import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 @Setter
@@ -21,26 +20,48 @@ public class Transaksi {
     private String statusPembayaran;
     private LocalDate tanggalTransaksi;
 
-    public Transaksi() {}
-    public Transaksi(Long transaksiId, List<Produk> listProduk, Long totalHarga,
-                     String statusPembayaran, LocalDate tanggalTransaksi) {
-        this.transaksiId = transaksiId;
-        this.listProduk = listProduk;
-        this.totalHarga = totalHarga;
-        this.statusPembayaran = statusPembayaran;
-        this.tanggalTransaksi = tanggalTransaksi;
+    private Transaksi(Builder builder) {
+        this.transaksiId = builder.transaksiId;
+        this.listProduk = builder.listProduk;
+        this.totalHarga = builder.totalHarga;
+        this.statusPembayaran = builder.statusPembayaran;
+        this.tanggalTransaksi = builder.tanggalTransaksi;
     }
 
-    public Transaksi(List<Produk> listProduk) {
-        this.listProduk = listProduk;
-    }
+    public static class Builder {
+        private Long transaksiId;
+        private List<Produk> listProduk;
+        private Long totalHarga;
+        private String statusPembayaran;
+        private LocalDate tanggalTransaksi;
 
-    public Long countHarga() {
-        long totalHarganya = 0;
-        for (Produk produk : listProduk) {
-            totalHarganya += Long.valueOf(produk.getHarga());
+        public Builder transaksiId(Long transaksiId) {
+            this.transaksiId = transaksiId;
+            return this;
         }
-        this.totalHarga = totalHarganya;
-        return Long.valueOf(totalHarganya);
+
+        public Builder listProduk(List<Produk> listProduk) {
+            this.listProduk = listProduk;
+            return this;
+        }
+
+        public Builder totalHarga(Long totalHarga) {
+            this.totalHarga = totalHarga;
+            return this;
+        }
+
+        public Builder statusPembayaran(String statusPembayaran) {
+            this.statusPembayaran = statusPembayaran;
+            return this;
+        }
+
+        public Builder tanggalTransaksi(LocalDate tanggalTransaksi) {
+            this.tanggalTransaksi = tanggalTransaksi;
+            return this;
+        }
+
+        public Transaksi build() {
+            return new Transaksi(this);
+        }
     }
 }
