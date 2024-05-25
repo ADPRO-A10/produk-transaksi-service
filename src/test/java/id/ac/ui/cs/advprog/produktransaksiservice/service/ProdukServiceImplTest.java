@@ -62,7 +62,6 @@ class ProdukServiceImplTest {
         assertEquals(100, findProduk.getStokTersedia());
         assertEquals(10, findProduk.getStokTerjual());
         assertEquals("Rockstar Store", findProduk.getPenjual());
-
     }
 
     @Test
@@ -129,7 +128,7 @@ class ProdukServiceImplTest {
     }
 
     @Test
-    void testEditProduk_NotFound() {
+    void testEditProdukNotFound() {
         Produk updatedProduk = new Produk();
         updatedProduk.setNama("Product B");
 
