@@ -25,6 +25,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
@@ -35,6 +36,7 @@ dependencies {
     testImplementation("com.h2database:h2")
     testImplementation("org.mockito:mockito-junit-jupiter")
     testImplementation("org.mockito:mockito-core")
+    runtimeOnly("com.h2database:h2")
 }
 
 tasks.withType<Test> {
