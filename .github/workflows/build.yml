@@ -9,7 +9,7 @@ on:
 name: Main Workflow
 jobs:
   test:
-    name: Run tests
+    name: Build
     runs-on: ubuntu-22.04
     steps:
       - name: Check out the Git repository
@@ -24,10 +24,6 @@ jobs:
         run: chmod +x ./gradlew
       - name: Run unit tests
         run: ./gradlew test
-
-  sonarcloud:
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v4
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
