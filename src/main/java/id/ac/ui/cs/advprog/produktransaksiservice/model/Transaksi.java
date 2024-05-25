@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Transaksi {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String transaksiId;
+    private UUID transaksiId;
 
     @ManyToMany
     @JoinTable(
