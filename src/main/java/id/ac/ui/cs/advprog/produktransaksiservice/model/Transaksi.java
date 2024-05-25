@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,19 +15,31 @@ import java.util.UUID;
 @Entity
 public class Transaksi {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID transaksiId;
-    private List<Produk> listProduk;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String transaksiId;
+
+    @ManyToMany
+    @JoinTable(
+            name = "transaksi_produk",
+            joinColumns = @JoinColumn(name = "transaksi_id"),
+            inverseJoinColumns = @JoinColumn(name = "produk_id")
+    )
+    private List<Produk> listProduk = new ArrayList<>();
+
     private Long totalHarga;
     private String statusPembayaran;
     private LocalDate tanggalTransaksi;
 
-    private Transaksi(Builder builder) {
-        this.transaksiId = builder.transaksiId;
+    public Transaksi(Builder builder) {
+        this.transaksiId = String.valueOf(builder.transaksiId);
         this.listProduk = builder.listProduk;
         this.totalHarga = builder.totalHarga;
         this.statusPembayaran = builder.statusPembayaran;
         this.tanggalTransaksi = builder.tanggalTransaksi;
+    }
+
+    public Transaksi() {
+
     }
 
     public static class Builder {

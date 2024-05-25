@@ -52,6 +52,9 @@ public class Produk {
     )
     private List<Review> reviews = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "listProduk")
+    List<Transaksi> transaksiList = new ArrayList<>();
+
     public Produk() {
     }
 
