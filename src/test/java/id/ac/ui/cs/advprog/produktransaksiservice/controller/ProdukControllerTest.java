@@ -181,6 +181,8 @@ public class ProdukControllerTest {
                         .penjual("Seller B")
                         .build();
 
+        when(produkServiceImpl.findProdukById("123")).thenReturn(produk);
+        when(produkServiceImpl.editProduk("123", updatedProduk)).thenReturn(produk);
         ResponseEntity<Produk> response2 = produkController.editProduk("123", updatedProduk);
 
         assertEquals(HttpStatus.OK, response2.getStatusCode());
