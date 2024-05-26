@@ -81,4 +81,24 @@ public class PembeliTest {
         assertNotNull(pembeli);
     }
 
+    @Test
+    void testRiwayatLibraryPembeli() {
+        List<Transaksi> listTransaksi = new ArrayList<>();
+        Transaksi transaksi1 = new Transaksi.Builder()
+                .transaksiId(UUID.randomUUID())
+                .listProduk(listProduk)
+                .totalHarga(Long.valueOf(123))
+                .statusPembayaran("selesai")
+                .tanggalTransaksi(LocalDate.now())
+                .build();
+        listTransaksi.add(transaksi1);
+
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(10000);
+        pembeli.setLibrary(listProduk);
+        pembeli.setRiwayatTransaksi(listTransaksi);
+        assertNotNull(pembeli);
+    }
+
 }

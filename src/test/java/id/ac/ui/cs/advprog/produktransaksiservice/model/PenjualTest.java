@@ -78,4 +78,23 @@ public class PenjualTest {
         penjual.setRiwayatTransaksi(null);
         assertNotNull(penjual);
     }
+
+    @Test
+    void testRiwayatKatalogPenjual() {
+        List<Transaksi> listTransaksi = new ArrayList<>();
+        Transaksi transaksi1 = new Transaksi.Builder()
+                .transaksiId(UUID.randomUUID())
+                .listProduk(listProduk)
+                .totalHarga(Long.valueOf(123))
+                .statusPembayaran("selesai")
+                .tanggalTransaksi(LocalDate.now())
+                .build();
+        listTransaksi.add(transaksi1);
+
+        Penjual penjual = new Penjual();
+        penjual.setUsername("ngeong");
+        penjual.setKatalog(listProduk);
+        penjual.setRiwayatTransaksi(listTransaksi);
+        assertNotNull(penjual);
+    }
 }
