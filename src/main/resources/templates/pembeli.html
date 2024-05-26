@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <title>Pembeli</title>
+</head>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<body>
+<h1>Penjual</h1>
+<h2 th:text="${pembeli.username}"></h2>
+<h2 th:text="${pembeli.userId}"></h2>
+<a>
+    <button>
+        <a th:href="@{http://localhost:8080/products/listAllProduk}">Browse Produk</a>
+    </button>
+</a>
+<table style="width:100%">
+    <tr>
+        <th>Nama Produk</th>
+        <th>Nama Penjual</th>
+    </tr>
+    <tr th:each="produk : ${library}">
+        <td th:text="${produk.nama}"></td>
+        <td th:text="${produk.penjual}"></td>
+    </tr>
+</table>
+</body>
+</html>

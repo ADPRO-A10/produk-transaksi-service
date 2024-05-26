@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <title>Penjual</title>
+</head>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<body>
+<table style="width:100%">
+    <tr>
+        <th>Nama Produk</th>
+        <th>Harga</th>
+        <th>Stok</th>
+        <th>Nama Penjual</th>
+    </tr>
+    <tr th:each="produk : ${produkList}">
+        <td th:text="${produk.nama}"></td>
+        <td th:text="${produk.harga}"></td>
+        <td th:text="${produk.stokTersedia}"></td>
+        <td th:text="${produk.penjual}"></td>
+
+    </tr>
+</table>
+</body>
+</html>
