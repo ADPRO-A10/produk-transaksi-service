@@ -38,10 +38,16 @@ public class TransaksiServiceImpl implements TransaksiService {
     }
 
     @Override
-    public void validateTransaksi(Pembeli pembeli, Transaksi transaksi, long totalHarga) {
+    public void validateTransaksi(Pembeli pembeli, Transaksi transaksi, long totalHarga, List<Produk> listProduk) {
         if (pembeli.getBalance() < totalHarga) {
-            throw new IllegalArgumentException();
-        } else {
+            throw new IllegalArgumentException("Insufficient Balance to Perform Transaction!");
+        }
+        else {
+            for (Produk produk : listProduk) {
+                if (produk.getStokTersedia() <= 0) {
+                    throw new IllegalArgumentException("Empty Stock!");
+                }
+            }
             transaksi.setStatusPembayaran("SUCCESS");
         }
     }
@@ -58,9 +64,9 @@ public class TransaksiServiceImpl implements TransaksiService {
                 .build();
 
         try {
-            validateTransaksi(pembeli, transaksi, totalHarga);
+            validateTransaksi(pembeli, transaksi, totalHarga, listProduk);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Insufficient Balance to Perform Transaction");
+            throw new IllegalArgumentException("Transaction Failed.");
         }
 
         TransactionInvoker invoker = new TransactionInvoker();
