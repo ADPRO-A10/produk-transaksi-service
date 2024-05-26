@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -80,5 +81,39 @@ public class TransaksiServiceImplTest {
         pembeli.setRiwayatTransaksi(new ArrayList<>());
 
         transaksiService.processTransaksi(pembeli, listPenjual, listProduk);
+    }
+
+    @Test
+    void testTooLittleBalance() {
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(1000);
+        pembeli.setLibrary(new ArrayList<>());
+        pembeli.setRiwayatTransaksi(new ArrayList<>());
+        assertThrows(IllegalArgumentException.class, () -> {transaksiService.processTransaksi(pembeli, listPenjual, listProduk);
+        });
+    }
+
+    @Test
+    void testEmptyStock() {
+        List<Produk> listProduk2 = new ArrayList<>(); // Initialize listProduk
+        Produk produk2 = new Produk();
+        produk2.setProdukId("234567");
+        produk2.setNama("kukuruyuk");
+        produk2.setHarga(4000);
+        produk2.setKategori("slice of life");
+        produk2.setDeskripsi("gacha telur");
+        produk2.setStokTersedia(0);
+        produk2.setStokTerjual(1);
+        produk2.setPenjual("ayam");
+        listProduk2.add(produk2);
+
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(10000);
+        pembeli.setLibrary(new ArrayList<>());
+        pembeli.setRiwayatTransaksi(new ArrayList<>());
+        assertThrows(IllegalArgumentException.class, () -> {transaksiService.processTransaksi(pembeli, listPenjual, listProduk2);
+        });
     }
 }

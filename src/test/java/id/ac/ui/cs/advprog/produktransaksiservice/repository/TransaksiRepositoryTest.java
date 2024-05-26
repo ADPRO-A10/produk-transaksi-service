@@ -62,4 +62,10 @@ public class TransaksiRepositoryTest {
         assertNotNull(transaksiRepository);
         transaksiRepository.findById(listTransaksi.get(0).getTransaksiId());
     }
+
+    @Test
+    void testFindAll() {
+        assertNotNull(transaksiRepository);
+        transaksiRepository.findAll();
+    }
 }

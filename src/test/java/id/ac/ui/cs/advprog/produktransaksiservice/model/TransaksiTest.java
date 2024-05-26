@@ -43,6 +43,17 @@ public class TransaksiTest {
 
     @Test
     void testCreateTransaksi() {
+            Transaksi transaksi = new Transaksi.Builder()
+                    .transaksiId(UUID.randomUUID())
+                    .listProduk(this.listProduk)
+                    .totalHarga(100L)
+                    .statusPembayaran("selesai")
+                    .tanggalTransaksi(LocalDate.now())
+                    .build();
+    }
+
+    @Test
+    void testInvalidTotalHarga() {
         assertThrows(IllegalArgumentException.class, () -> {
             Transaksi transaksi = new Transaksi.Builder()
                     .transaksiId(UUID.randomUUID())
@@ -54,5 +65,74 @@ public class TransaksiTest {
         });
     }
 
+    @Test
+    void testEmptyRiwayatPembeli() {
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(10000);
+        pembeli.setLibrary(this.listProduk);
+        pembeli.setRiwayatTransaksi(null);
+    }
 
+    @Test
+    void testEmptyLibraryPembeli() {
+        List<Transaksi> listTransaksi = new ArrayList<>();
+        Transaksi transaksi1 = new Transaksi.Builder()
+                .transaksiId(UUID.randomUUID())
+                .listProduk(listProduk)
+                .totalHarga(Long.valueOf(123))
+                .statusPembayaran("selesai")
+                .tanggalTransaksi(LocalDate.now())
+                .build();
+        listTransaksi.add(transaksi1);
+
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(10000);
+        pembeli.setLibrary(null);
+        pembeli.setRiwayatTransaksi(listTransaksi);
+    }
+
+    @Test
+    void testEmptyLibraryRiwayatPembeli() {
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(10000);
+        pembeli.setLibrary(null);
+        pembeli.setRiwayatTransaksi(null);
+    }
+
+    @Test
+    void testEmptyRiwayatPenjual() {
+        Penjual penjual = new Penjual();
+        penjual.setUsername("ngeong");
+        penjual.setKatalog(listProduk);
+        penjual.setRiwayatTransaksi(null);
+    }
+
+    @Test
+    void testEmptyKatalogPenjual() {
+        List<Transaksi> listTransaksi = new ArrayList<>();
+        Transaksi transaksi1 = new Transaksi.Builder()
+                .transaksiId(UUID.randomUUID())
+                .listProduk(listProduk)
+                .totalHarga(Long.valueOf(123))
+                .statusPembayaran("selesai")
+                .tanggalTransaksi(LocalDate.now())
+                .build();
+        listTransaksi.add(transaksi1);
+
+        Penjual penjual = new Penjual();
+        penjual.setUsername("ngeong");
+        penjual.setKatalog(null);
+        penjual.setRiwayatTransaksi(listTransaksi);
+    }
+
+    @Test
+    void testEmptyKatalogRiwayatPenjual() {
+        Penjual penjual = new Penjual();
+        penjual.setUsername("ngeong");
+        penjual.setKatalog(null);
+        penjual.setRiwayatTransaksi(null);
+    }
 }

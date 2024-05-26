@@ -13,6 +13,6 @@ public interface TransaksiService {
     Transaksi createTransaksi(Transaksi transaksi);
     Optional<Transaksi> getTransaksi(UUID transaksiId);
     Long sumHarga(List<Produk> listProduk);
-    void validateTransaksi(Pembeli pembeli, Transaksi transaksi, long totalHarga);
+    void validateTransaksi(Pembeli pembeli, Transaksi transaksi, long totalHarga, List<Produk> listProduk);
     Transaksi processTransaksi(Pembeli pembeli, List<Penjual> listPenjual, List<Produk> listProduk);
 }
