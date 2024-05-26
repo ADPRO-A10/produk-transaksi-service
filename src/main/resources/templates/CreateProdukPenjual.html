@@ -35,6 +35,10 @@
             <label for="stokInput">Stok Awal</label>
             <input th:field="*{stokTersedia}" type="text" class="form-control mb-4 col-4" id="stokInput">
         </div>
+        <div class="form-group">
+            <label for="penjualInput">Penjual</label>
+            <input th:field="*{penjual}" type="text" class="form-control mb-4 col-4" id="penjualInput" th:placeholder="${penjual.username}">
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
