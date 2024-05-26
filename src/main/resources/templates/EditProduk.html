@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create New Product</title>
+    <title>Edit Product</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERd`knLPMO" crossorigin="anonymous">
 </head>
 
@@ -14,7 +14,7 @@
         <p th:text="${errorMessage}"></p>
     </div>
 
-    <form th:action="@{/products/createProduk/{id}(id=${penjual.userId})}" th:object="${produk}" method="post">
+    <form th:action="@{/products/edit/{productId}/{penjualId}(productId=${produk.getProdukId()}, penjualId=${penjual.userId})}" th:object="${produk}" method="post">
         <div class="form-group">
             <label for="nameInput">Nama</label>
             <input th:field="*{nama}" type="text" class="form-control mb-4 col-4" id="nameInput" >
@@ -34,10 +34,6 @@
         <div class="form-group">
             <label for="stokInput">Stok Awal</label>
             <input th:field="*{stokTersedia}" type="text" class="form-control mb-4 col-4" id="stokInput">
-        </div>
-        <div class="form-group">
-            <label for="penjualInput">Penjual</label>
-            <input th:field="*{penjual}" type="text" class="form-control mb-4 col-4" id="penjualInput" th:placeholder="${penjual.username}">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

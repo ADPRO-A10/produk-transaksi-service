@@ -24,13 +24,19 @@
             <th>Nama Produk</th>
             <th>Harga</th>
             <th>Stok</th>
-            <th>Nama Penjual</th>
+            <th>Edit</th>
         </tr>
         <tr th:each="produk : ${katalog}">
             <td th:text="${produk.nama}"></td>
             <td th:text="${produk.harga}"></td>
             <td th:text="${produk.stokTersedia}"></td>
-            <td th:text="${produk.penjual}"></td>
+            <a>
+                <td>
+                <button>
+                    <a th:href="@{/products/edit/{productId}/{penjualId}(productId=${produk.getProdukId()}, penjualId=${penjual.userId})}">Edit</a>
+                </button>
+                </td>
+            </a>
         </tr>
     </table>
 </body>
