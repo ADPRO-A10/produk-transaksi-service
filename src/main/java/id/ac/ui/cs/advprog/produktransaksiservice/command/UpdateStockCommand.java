@@ -6,6 +6,7 @@ public class UpdateStockCommand implements TransactionCommand {
     private Produk produk;
     private int quantity;
 
+
     public UpdateStockCommand(Produk produk, int quantity) {
         this.produk = produk;
         this.quantity = quantity;

@@ -17,15 +17,14 @@ import java.util.UUID;
 public class TransaksiServiceImpl implements TransaksiService {
     @Autowired
     private TransaksiRepository transaksiRepository;
-
-    @Override
-    public Transaksi createTransaksi(Transaksi transaksi) {
-
-        return transaksiRepository.save(transaksi);
-    }
     @Override
     public Optional<Transaksi> getTransaksi(UUID transaksiId) {
         return transaksiRepository.findById(transaksiId);
+    }
+
+    @Override
+    public List<Transaksi> getAllTransaksi() {
+        return transaksiRepository.findAll();
     }
 
     @Override
@@ -68,6 +67,8 @@ public class TransaksiServiceImpl implements TransaksiService {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Transaction Failed.");
         }
+
+        transaksi = transaksiRepository.save(transaksi);
 
         TransactionInvoker invoker = new TransactionInvoker();
         invoker.addCommand(new AddLibraryCommand(pembeli, listProduk));
