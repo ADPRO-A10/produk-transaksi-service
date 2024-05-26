@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <title>Penjual</title>
+</head>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<body>
+    <h1>Penjual</h1>
+    <h2 th:text="${penjual.username}"></h2>
+    <h2 th:text="${penjual.userId}"></h2>
+    <a>
+        <button>
+            <a th:href="@{/products/createProduk/{id}(id=${penjual.userId})}">Create Produk</a>
+        </button>
+    </a>
+    <table style="width:100%">
+        <tr>
+            <th>Nama Produk</th>
+            <th>Harga</th>
+            <th>Stok</th>
+            <th>Nama Penjual</th>
+        </tr>
+        <tr th:each="produk : ${katalog}">
+            <td th:text="${produk.nama}"></td>
+            <td th:text="${produk.harga}"></td>
+            <td th:text="${produk.stokTersedia}"></td>
+            <td th:text="${produk.penjual}"></td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 
-@SpringBootApplication()
+@SpringBootApplication
 public class ProdukTransaksiServiceApplication {
 
     public static void main(String[] args) {

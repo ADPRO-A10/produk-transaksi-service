@@ -1,8 +1,11 @@
 package id.ac.ui.cs.advprog.produktransaksiservice.controller;
 
 import id.ac.ui.cs.advprog.produktransaksiservice.model.Produk;
+import id.ac.ui.cs.advprog.produktransaksiservice.model.Penjual;
 import id.ac.ui.cs.advprog.produktransaksiservice.model.ProdukDirector;
+import id.ac.ui.cs.advprog.produktransaksiservice.repository.PenjualRepository;
 import id.ac.ui.cs.advprog.produktransaksiservice.service.ProdukServiceImpl;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import id.ac.ui.cs.advprog.produktransaksiservice.repository.ProdukRepository;
@@ -13,17 +16,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/products")
 public class ProdukController {
 
     private ProdukDirector.ProdukBuilder produkBuilder;
     private ProdukServiceImpl produkServiceImpl;
+    private PenjualRepository penjualRepository;
+
 
     @Autowired
-    ProdukController(ProdukServiceImpl produkServiceImpl) {
+    ProdukController(ProdukServiceImpl produkServiceImpl, PenjualRepository penjualRepository) {
         this.produkServiceImpl = produkServiceImpl;
         this.produkBuilder = new ProdukDirector.ProdukBuilder();
+        this.penjualRepository = penjualRepository;
     }
 
     @GetMapping("")
@@ -47,11 +53,44 @@ public class ProdukController {
         return new ResponseEntity<>(produk, HttpStatus.OK);
     }
 
+    @GetMapping("/createProduk/{id}")
+    public String createProdukPage(Model model, @PathVariable Long id) {
+        Produk produk = new Produk();
+        model.addAttribute("produk", produk);
+        Penjual penjualnya = penjualRepository.findByUserId(id);
+        model.addAttribute("id", id);
+        if (penjualnya == null) {
+            return "redirect:/";
+        }
+        model.addAttribute("penjual", penjualnya);
+        return "CreateProdukPenjual";
+    }
+
+    @PostMapping("/createProduk/{id}")
+    public String createProduk(@ModelAttribute Produk produk, @PathVariable Long id, Model model) {
+        Penjual penjualnya = penjualRepository.findByUserId(id);
+        if (penjualnya == null) {
+            return "redirect:/";
+        } else {
+            try {
+            produk.setPenjual(penjualnya.getUsername());
+            produkServiceImpl.createProduk(produk);
+            penjualnya.getKatalog().add(produk);
+            penjualRepository.save(penjualnya);
+            return "redirect:/penjual/" + id;
+            } catch (Exception e) {
+                model.addAttribute("errorMessage", e.getMessage());
+                return "redirect:/createProduk/" + id;
+            }
+        }
+    }
+
+
     @PostMapping("/create")
-    public ResponseEntity<Produk> createProduk(@RequestBody Produk produk) {
+    public ResponseEntity<Produk> createProdukPost(@RequestBody Produk produk) {
         try {
-            Produk createdProduk = produkServiceImpl.createProduk(produk);
-            return new ResponseEntity<>(createdProduk, HttpStatus.CREATED);
+            produkServiceImpl.createProduk(produk);
+            return new ResponseEntity<>(produk, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
