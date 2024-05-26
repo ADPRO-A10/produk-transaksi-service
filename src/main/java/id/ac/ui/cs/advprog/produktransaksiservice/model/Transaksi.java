@@ -30,6 +30,14 @@ public class Transaksi {
     private String statusPembayaran;
     private LocalDate tanggalTransaksi;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pembeli_id")
+    private Pembeli transaksiPembeli;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "penjual_id")
+    private Penjual transaksiPenjual;
+
 
     private Transaksi(Builder builder) {
         this.transaksiId = builder.transaksiId;
