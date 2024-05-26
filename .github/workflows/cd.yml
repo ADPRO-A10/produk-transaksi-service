@@ -28,12 +28,11 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-
       - name: Build with Gradle
         run: ./gradlew assemble
+      # (Optional) Add steps for running tests and generating reports
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -55,10 +54,8 @@ jobs:
           distribution: "temurin"
           java-version: "21"
           cache: "gradle"
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:
@@ -72,6 +69,7 @@ jobs:
           ./gradlew check --info --stacktrace
           ./gradlew test
           ./gradlew jacocoTestReport
+      # (Optional) Add steps for generating coverage report and other post-test tasks
 
   publish:
     name: Publish Docker Image
@@ -80,12 +78,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
+      - name: Check directory
+        run: ls -al
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
           name: java-app
-
+      - name: Check directory
+        run: ls -al
       - name: Docker login
         run: |
           if [ "${{ github.ref }}" == "refs/heads/master" ]; then
@@ -93,17 +93,15 @@ jobs:
           else
             echo ${{ secrets.DOCKER_PASSWORD_STAGING }} | docker login -u ${{ secrets.REGISTRY_USER_STAGING }} --password-stdin docker.io
           fi
-
       - name: Set Docker BuildKit
         run: export DOCKER_BUILDKIT=1
-
       - name: Build Docker Image
         run: |
           if [ "${{ github.ref }}" == "refs/heads/master" ]; then
-            docker build --build-arg SPRING_PROFILES_ACTIVE=prod --build-arg JDBC_DATABASE_PASSWORD=$JDBC_DATABASE_PASSWORD --build-arg JDBC_DATABASE_URL=$JDBC_DATABASE_URL --build-arg JDBC_DATABASE_USERNAME=$JDBC_DATABASE_USERNAME -t ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} .
+            docker build --build-arg PRODUCTION=$PRODUCTION --build-arg JDBC_DATABASE_PASSWORD=$JDBC_DATABASE_PASSWORD --build-arg JDBC_DATABASE_URL=$JDBC_DATABASE_URL --build-arg JDBC_DATABASE_USERNAME=$JDBC_DATABASE_USERNAME -t ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} .
             docker push ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
           else
-            docker build --build-arg SPRING_PROFILES_ACTIVE=prod --build-arg JDBC_DATABASE_PASSWORD=$JDBC_DATABASE_PASSWORD_STAGING --build-arg JDBC_DATABASE_URL=$JDBC_DATABASE_URL_STAGING --build-arg JDBC_DATABASE_USERNAME=$JDBC_DATABASE_USERNAME_STAGING -t ${{ secrets.REGISTRY_USER_STAGING }}/${{ secrets.IMAGE_NAME_STAGING }}:${{ secrets.IMAGE_TAG_STAGING }} .
+            docker build --build-arg PRODUCTION_STAGING=$PRODUCTION_STAGING --build-arg JDBC_DATABASE_PASSWORD_STAGING=$JDBC_DATABASE_PASSWORD_STAGING --build-arg JDBC_DATABASE_URL_STAGING=$JDBC_DATABASE_URL_STAGING --build-arg JDBC_DATABASE_USERNAME_STAGING=$JDBC_DATABASE_USERNAME_STAGING -t ${{ secrets.REGISTRY_USER_STAGING }}/${{ secrets.IMAGE_NAME_STAGING }}:${{ secrets.IMAGE_TAG_STAGING }} .
             docker push ${{ secrets.REGISTRY_USER_STAGING }}/${{ secrets.IMAGE_NAME_STAGING }}:${{ secrets.IMAGE_TAG_STAGING }}
           fi
 
@@ -128,17 +126,16 @@ jobs:
 
       - name: Update permission
         run: chmod 400 ssh-key.pem
-
       - name: Deploy to GCP
         run: |
           if [ "${{ github.ref }}" == "refs/heads/master" ]; then
             ssh -o StrictHostKeyChecking=no -i ssh-key.pem ${{ secrets.GCP_USERNAME }}@${{ secrets.GCP_STATIC_IP }} "
               sudo docker container rm -f ${{ secrets.CONTAINER_NAME }} || true &&
               sudo docker image rm -f ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} || true &&
-              sudo docker run --name ${{ secrets.CONTAINER_NAME }} -d -p 80:8080 ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} --spring.profiles.active=prod"
+              sudo docker run --name ${{ secrets.CONTAINER_NAME }} -d -p 80:8080 ${{ secrets.REGISTRY_USER }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}"
           else
             ssh -o StrictHostKeyChecking=no -i ssh-key.pem ${{ secrets.GCP_USERNAME_STAGING }}@${{ secrets.GCP_STATIC_IP_STAGING }} "
               sudo docker container rm -f ${{ secrets.CONTAINER_NAME_STAGING }} || true &&
               sudo docker image rm -f ${{ secrets.REGISTRY_USER_STAGING }}/${{ secrets.IMAGE_NAME_STAGING }}:${{ secrets.IMAGE_TAG_STAGING }} || true &&
-              sudo docker run --name ${{ secrets.CONTAINER_NAME_STAGING }} -d -p 80:8080 ${{ secrets.REGISTRY_USER_STAGING }}/${{ secrets.IMAGE_NAME_STAGING }}:${{ secrets.IMAGE_TAG_STAGING }} --spring.profiles.active=staging"
+              sudo docker run --name ${{ secrets.CONTAINER_NAME_STAGING }} -d -p 80:8080 ${{ secrets.REGISTRY_USER_STAGING }}/${{ secrets.IMAGE_NAME_STAGING }}:${{ secrets.IMAGE_TAG_STAGING }}"
           fi
