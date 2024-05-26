@@ -17,15 +17,14 @@ import java.util.UUID;
 public class TransaksiServiceImpl implements TransaksiService {
     @Autowired
     private TransaksiRepository transaksiRepository;
-
-    @Override
-    public Transaksi createTransaksi(Transaksi transaksi) {
-
-        return transaksiRepository.save(transaksi);
-    }
     @Override
     public Optional<Transaksi> getTransaksi(UUID transaksiId) {
         return transaksiRepository.findById(transaksiId);
+    }
+
+    @Override
+    public List<Transaksi> getAllTransaksi() {
+        return transaksiRepository.findAll();
     }
 
     @Override

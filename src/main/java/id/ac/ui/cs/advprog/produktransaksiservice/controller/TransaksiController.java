@@ -11,6 +11,8 @@ import id.ac.ui.cs.advprog.produktransaksiservice.repository.TransaksiRepository
 import id.ac.ui.cs.advprog.produktransaksiservice.service.TransaksiService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,11 +59,20 @@ public class TransaksiController {
         return ResponseEntity.ok(response.toString());
     }
 
-    @PostMapping("/get/{transaksiId}")
-    public ResponseEntity<String> getTransaksi(@PathVariable UUID transaksiId){
+    @GetMapping("/get/{transaksiId}")
+    public ResponseEntity<Transaksi> getTransaksi(@PathVariable UUID transaksiId) {
         Optional<Transaksi> transaksi = transaksiService.getTransaksi(transaksiId);
-        if (transaksi.isPresent()) {
-            return ResponseEntity.ok("Transaksi found: " + transaksi.get().toString());
+        return transaksi.map(value -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(value))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @PostMapping("/getall")
+    public ResponseEntity<List<Transaksi>> getAllTransaksi(){
+        List<Transaksi> listTransaksi = transaksiService.getAllTransaksi();
+        if (!listTransaksi.isEmpty()) {
+            return ResponseEntity.ok(listTransaksi);
         } else {
             return ResponseEntity.notFound().build();
         }

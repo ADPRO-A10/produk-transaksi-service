@@ -116,4 +116,14 @@ public class TransaksiServiceImplTest {
         assertThrows(IllegalArgumentException.class, () -> {transaksiService.processTransaksi(pembeli, listPenjual, listProduk2);
         });
     }
+
+    @Test
+    void testGetById() {
+        transaksiService.getTransaksi(listTransaksi.get(0).getTransaksiId());
+    }
+
+    @Test
+    void testGetAll() {
+        transaksiService.getAllTransaksi();
+    }
 }
