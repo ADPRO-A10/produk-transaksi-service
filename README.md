@@ -1,2 +1,7 @@
-## Deployment Production : http://34.143.169.251/
-## Deployment Staging : http://34.124.176.123/
+# Code Diagram
+
+<img src="img/CodeDiagram.jpg">
+
+# Container Diagram
+
+<img src="img/ContainerDiagram.jpg">
