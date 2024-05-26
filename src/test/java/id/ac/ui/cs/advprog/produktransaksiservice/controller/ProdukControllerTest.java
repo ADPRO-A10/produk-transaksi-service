@@ -63,7 +63,7 @@ public class ProdukControllerTest {
                 .build();
 
         when(produkServiceImpl.createProduk(produk)).thenReturn(produk);
-        ResponseEntity<Produk> response = produkController.createProduk(produk);
+        ResponseEntity<Produk> response = produkController.createProdukPost(produk);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(produk.getProdukId(), response.getBody().getProdukId());
@@ -92,12 +92,12 @@ public class ProdukControllerTest {
                 .build();
 
         when(produkServiceImpl.createProduk(produk)).thenReturn(produk);
-        ResponseEntity<Produk> response1 = produkController.createProduk(produk);
+        ResponseEntity<Produk> response1 = produkController.createProdukPost(produk);
         assertEquals(HttpStatus.CREATED, response1.getStatusCode());
         assertEquals(produk, response1.getBody());
 
         when(produkServiceImpl.createProduk(produk2)).thenThrow(new RuntimeException());
-        ResponseEntity<Produk> response = produkController.createProduk(produk2);
+        ResponseEntity<Produk> response = produkController.createProdukPost(produk2);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
@@ -113,7 +113,7 @@ public class ProdukControllerTest {
                 .penjual("Rockstar Store")
                 .build();
 
-        produkController.createProduk(produk1);
+        produkController.createProdukPost(produk1);
 
         Produk produk2 = produkBuilder.id("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3455")
                 .nama("GTA V")
@@ -125,7 +125,7 @@ public class ProdukControllerTest {
                 .penjual("Rockstar Store")
                 .build();
 
-        produkController.createProduk(produk2);
+        produkController.createProdukPost(produk2);
 
         List<Produk> produkList = new ArrayList<>();
         produkList.add(produk1);
@@ -152,7 +152,7 @@ public class ProdukControllerTest {
                 .penjual("Rockstar Store")
                 .build();
 
-        produkController.createProduk(produk);
+        produkController.createProdukPost(produk);
         when(produkServiceImpl.findProdukById("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454")).thenReturn(produk);
 
         ResponseEntity<Produk> response = produkController.getProdukById("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
@@ -182,7 +182,7 @@ public class ProdukControllerTest {
                 .build();
 
         when(produkServiceImpl.createProduk(produk)).thenReturn(produk);
-        ResponseEntity<Produk> response = produkController.createProduk(produk);
+        ResponseEntity<Produk> response = produkController.createProdukPost(produk);
 
         Produk updatedProduk = produkBuilder
                         .nama("Product B")
@@ -221,7 +221,7 @@ public class ProdukControllerTest {
                 .stokTerjual(0)
                 .penjual("Seller A")
                 .build();
-        produkController.createProduk(produk);
+        produkController.createProdukPost(produk);
         when(produkServiceImpl.findProdukById("123")).thenReturn(produk);
         assertNotNull(produkController.getProdukById("123"));
 
