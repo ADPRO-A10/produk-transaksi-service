@@ -11,4 +11,5 @@ public class HelloController {
     public String helloPage(Model model){
         return "Hello";
     }
+
 }
