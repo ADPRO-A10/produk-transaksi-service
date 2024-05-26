@@ -7,6 +7,7 @@ plugins {
 }
 
 
+
 sonar {
     properties {
         property("sonar.projectKey", "ADPRO-A10_produk-transaksi-service")
