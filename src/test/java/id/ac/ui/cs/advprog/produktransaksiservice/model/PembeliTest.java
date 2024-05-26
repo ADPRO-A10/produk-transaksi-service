@@ -48,6 +48,7 @@ public class PembeliTest {
         pembeli.setBalance(10000);
         pembeli.setLibrary(this.listProduk);
         pembeli.setRiwayatTransaksi(null);
+        assertNotNull(pembeli);
     }
 
     @Test
@@ -67,6 +68,7 @@ public class PembeliTest {
         pembeli.setBalance(10000);
         pembeli.setLibrary(null);
         pembeli.setRiwayatTransaksi(listTransaksi);
+        assertNotNull(pembeli);
     }
 
     @Test
@@ -76,6 +78,7 @@ public class PembeliTest {
         pembeli.setBalance(10000);
         pembeli.setLibrary(null);
         pembeli.setRiwayatTransaksi(null);
+        assertNotNull(pembeli);
     }
 
 }

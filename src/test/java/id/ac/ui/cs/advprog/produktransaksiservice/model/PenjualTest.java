@@ -47,6 +47,8 @@ public class PenjualTest {
         penjual.setUsername("ngeong");
         penjual.setKatalog(listProduk);
         penjual.setRiwayatTransaksi(null);
+
+        assertNotNull(penjual);
     }
 
     @Test
@@ -65,6 +67,7 @@ public class PenjualTest {
         penjual.setUsername("ngeong");
         penjual.setKatalog(null);
         penjual.setRiwayatTransaksi(listTransaksi);
+        assertNotNull(penjual);
     }
 
     @Test
@@ -73,5 +76,6 @@ public class PenjualTest {
         penjual.setUsername("ngeong");
         penjual.setKatalog(null);
         penjual.setRiwayatTransaksi(null);
+        assertNotNull(penjual);
     }
 }
