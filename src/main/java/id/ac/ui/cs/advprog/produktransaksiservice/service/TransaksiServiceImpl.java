@@ -68,6 +68,8 @@ public class TransaksiServiceImpl implements TransaksiService {
             throw new IllegalArgumentException("Transaction Failed.");
         }
 
+        transaksi = transaksiRepository.save(transaksi);
+
         TransactionInvoker invoker = new TransactionInvoker();
         invoker.addCommand(new AddLibraryCommand(pembeli, listProduk));
         for (Produk produk : listProduk) {

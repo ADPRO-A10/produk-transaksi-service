@@ -126,4 +126,38 @@ public class TransaksiServiceImplTest {
     void testGetAll() {
         transaksiService.getAllTransaksi();
     }
+
+    @Test
+    void testSaveTransaksi() {
+        Pembeli pembeli = new Pembeli();
+        pembeli.setUsername("guguk");
+        pembeli.setBalance(10000);
+        pembeli.setLibrary(new ArrayList<>());
+        pembeli.setRiwayatTransaksi(new ArrayList<>());
+
+        Penjual penjual = new Penjual();
+        penjual.setUsername("ngeong");
+        penjual.setKatalog(null);
+        penjual.setRiwayatTransaksi(null);
+
+        Produk produk = new Produk();
+        produk.setHarga(5000);
+        produk.setStokTersedia(1);
+
+        List<Produk> listProduk = new ArrayList<>();
+        listProduk.add(produk);
+
+        when(transaksiRepository.save(any())).thenReturn(new Transaksi.Builder()
+                .transaksiId(UUID.randomUUID())
+                .listProduk(listProduk)
+                .totalHarga(5000L)
+                .statusPembayaran("AWAITING PAYMENT")
+                .tanggalTransaksi(LocalDate.now())
+                .build());
+
+        Transaksi transaksi = transaksiService.processTransaksi(pembeli, List.of(penjual), listProduk);
+
+        verify(transaksiRepository).save(any());
+
+    }
 }
