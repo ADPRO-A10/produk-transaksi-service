@@ -44,6 +44,13 @@ public class ProdukController {
         return new ResponseEntity<>(produkServiceImpl.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/listAllProduk")
+    public String listAllProduk(Model model) {
+        List<Produk> produkList = produkServiceImpl.findAll();
+        model.addAttribute("produkList", produkList);
+        return "ListProduk";
+    }
+
     @GetMapping({"/{id}"})
     public ResponseEntity<Produk> getProdukById(@PathVariable String id) {
         Produk produk = produkServiceImpl.findProdukById(id);
@@ -85,8 +92,6 @@ public class ProdukController {
         }
     }
 
-
-
     @PostMapping("/create")
     public ResponseEntity<Produk> createProdukPost(@RequestBody Produk produk) {
         try {
@@ -115,5 +120,25 @@ public class ProdukController {
         }
         produkServiceImpl.deleteProduk(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/edit/{productId}/{penjualId}")
+    public String editProductPage(@PathVariable String productId, Model model, @PathVariable Long penjualId) {
+        Produk produk = produkServiceImpl.findProdukById(productId);
+        Penjual penjual = penjualRepository.findByUserId(penjualId);
+        model.addAttribute("produk", produk);
+        model.addAttribute("penjual", penjual);
+        return "EditProduk";
+    }
+
+    @PostMapping("/edit/{productId}/{penjualId}")
+    public String editProductPost(@PathVariable String productId, Model model, @ModelAttribute Produk product, @PathVariable Long penjualId) {
+        try {
+            produkServiceImpl.editProduk(productId, product);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "EditProduk";
+        }
+        return "redirect:/penjual/" + penjualId;
     }
 }
