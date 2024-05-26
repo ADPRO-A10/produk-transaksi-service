@@ -55,6 +55,12 @@ public class Produk {
     @ManyToMany(mappedBy = "listProduk")
     List<Transaksi> transaksiList = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "library")
+    List<Pembeli> pembeliList = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "katalog")
+    List<Penjual> penjualList = new ArrayList<>();
+
     public Produk() {
     }
 
