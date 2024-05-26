@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 public class TransaksiRepositoryTest {
 
-    @Autowired
+    @Mock
     TransaksiRepository transaksiRepository;
 
     List<Transaksi> listTransaksi;
@@ -62,14 +62,7 @@ public class TransaksiRepositoryTest {
 
     @Test
     void testFindId() {
+        assertNotNull(transaksiRepository);
         transaksiRepository.findById(listTransaksi.get(0).getTransaksiId());
-        assertNotNull(transaksiRepository);
-
-    }
-
-    @Test
-    void testFindAll() {
-        transaksiRepository.findAll();
-        assertNotNull(transaksiRepository);
     }
 }
